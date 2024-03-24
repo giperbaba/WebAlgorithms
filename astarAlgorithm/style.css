@@ -1,0 +1,20 @@
+#astar {
+  display: flex;
+  margin: auto;
+  width: 50%;
+}
+
+#canvas {
+  width: 550px;
+  border: 1px solid rosybrown;
+}
+
+.buttons{
+  display: inline-block;
+  padding: 12px 28px;
+  font-size: 25px;
+}
+
+
+
+
