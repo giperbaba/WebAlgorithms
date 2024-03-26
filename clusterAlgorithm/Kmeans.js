@@ -5,86 +5,38 @@ let canvasWidthNum = parseInt(canvasWidth.replace("px", ""));
 canvas.width = canvasWidthNum;
 canvas.height = canvas.width;
 
-class Point {
-  constructor(x, y, r) {
-    this.x = x;
-    this.y = y;
-    this.r = r;
-  }
-}
-
-ctx.beginPath();
-ctx.rect(0, 0, canvas.width, canvas.height);
-ctx.fillStyle = "white";
-ctx.fill();
-
-function drawPoint(x, y, r) {
-  ctx.beginPath();
-  ctx.arc(x, y,  r, 0,Math.PI * 2);
-  ctx.fillStyle = 'black';
-  ctx.fill();
-  let point = new Point(x, y, r);
-  circles.push(point);
-}
-
-function clear(x, y, r){
-  for (let i = 0; i < circles.length; i++) {
-    const dist = Math.sqrt((x - circles[i].x) ** 2 + (y - circles[i].y) ** 2);
-    if (dist <= circles[i].r) {
-      ctx.beginPath();
-      ctx.rect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = 'white';
-      ctx.fill();
-      circles.splice(i, 1);
-      for (let j = 0; j < circles.length; j++) {
-        ctx.beginPath();
-        ctx.arc(circles[j].x, circles[j].y, circles[j].r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'black';
-        ctx.fill();
-      }
-      break;
-    }
-  }
-}
-
-
-let radius = 15;
-let circles = [];
-let action = 1;
 const add = document.getElementById('add');
 const erase = document.getElementById('delete');
 const deleteAll = document.getElementById('deleteAll');
 const startK = document.getElementById('startK');
 
-function getRandomColor() {
-  let color = '#';
-  const randomColor = Math.floor(Math.random()*16777215).toString(16)
-  color += randomColor;
-  return color;
-}
+let radius = 15;
+let circles = [];
+let flag = 1;
+
 add.addEventListener('click', function () {
-  action = 1;
+  flag = 1;
 });
 
 erase.addEventListener('click', function () {
-  action = 2;
+  flag = 2;
 });
 deleteAll.addEventListener('click', function () {
-  action = 0;
+  flag = 0;
   circles = [];
   ctx.beginPath();
-  ctx.rect(0, 0, canvas.width, canvas.height);
+  ctx.rect(0, 0, canvas.width, canvas.height); //всю канву красим в белый
   ctx.fillStyle = "white";
   ctx.fill();
 });
 
 canvas.addEventListener('click', function(event) {
-  if (action === 1) {
-    const x = event.clientX - canvas.offsetLeft;
-    const y = event.clientY - canvas.offsetTop;
+  if (flag === 1) {
+    const x = event.clientX - canvas.offsetLeft; // получаем координату X курсора относительно левого края элемента canvas.
+    const y = event.clientY - canvas.offsetTop; //мы получаем координату Y курсора относительно верхнего края элемента canvas.
     drawPoint(x,y,radius);
   }
-  else if (action === 2) {
+  else if (flag === 2) {
     const x = event.clientX - canvas.offsetLeft;
     const y = event.clientY - canvas.offsetTop;
     clear(x,y,radius);
@@ -112,10 +64,55 @@ startK.addEventListener('click', function () {
   }
 });
 
+ctx.beginPath();
+ctx.rect(0, 0, canvas.width, canvas.height);
+ctx.fillStyle = "white";
+ctx.fill();
+class Point {
+  constructor(x, y, r) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+  }
+}
+function drawPoint(x, y, r) {
+  ctx.beginPath();
+  ctx.arc(x, y,  r, 0,Math.PI * 2);
+  ctx.fillStyle = 'black';
+  ctx.fill();
+  let point = new Point(x, y, r); //point - координаты, поставленной точки
+  circles.push(point); //обновляем массив с точками после каждой новой нарисованной точки
+}
+
+function clear(x, y, r){
+  for (let i = 0; i < circles.length; i++) { //проходимся по нарисованным точкам
+    const dist = Math.sqrt((x - circles[i].x) ** 2 + (y - circles[i].y) ** 2); // вычисляем расстояние между точками
+    if (dist <= circles[i].r) { //если расстояние меньше, чем радиус, то есть мышка заходит на окружность
+      ctx.beginPath();
+      ctx.rect(0, 0, canvas.width, canvas.height); //очищаем канву от ненужной точки в белый
+      ctx.fillStyle = 'white';
+      ctx.fill();
+      circles.splice(i, 1); //начиная с индекса i удаляем один элемент
+      for (let j = 0; j < circles.length; j++) { //проходимся по оставшимся точкам, для того чтобы не удалять нужные точки
+        ctx.beginPath();
+        ctx.arc(circles[j].x, circles[j].y, circles[j].r, 0, 2 * Math.PI);
+        ctx.fillStyle = 'black'; //красим неудаленные точки в черный
+        ctx.fill();
+      }
+      break;
+    }
+  }
+}
+
+function getRandomColor() {
+  let color = '#';
+  const randomColor = Math.floor(Math.random()*16777215).toString(16)
+  color += randomColor;
+  return color;
+}
 function distance(firstPoint, secondPoint) {
   return Math.sqrt(Math.pow(firstPoint.x - secondPoint.x, 2) + Math.pow(firstPoint.y - secondPoint.y, 2));
 }
-
 function nearestCentroid(point, centroids) {
   let minDistance = Infinity;
   let nearest = null;
@@ -129,14 +126,11 @@ function nearestCentroid(point, centroids) {
   return nearest;
 }
 
-function getRandomCentroids(countOfClasters) {
+function getRandomCentroids(countOfClusters) { //вычисляем координаты рандомных центроидов
   const centroids = [];
-  const canvas = document.querySelector("canvas");
-  const width = canvas.width;
-  const height = canvas.height;
-  for (let i = 0; i < countOfClasters; i++) {
-    const x = Math.floor(Math.random() * width);
-    const y = Math.floor(Math.random() * height);
+  for (let i = 0; i < countOfClusters; i++) {
+    const x = Math.floor(Math.random() * canvas.width); //Math.random() генерирует число от 0 до 1
+    const y = Math.floor(Math.random() * canvas.height);
     centroids.push({x, y});
   }
   return centroids;
@@ -148,10 +142,10 @@ function updateCentroids(clusters) {
     let sumOfX = 0;
     let sumOfY = 0;
     for (const point of cluster.points) {
-      sumOfX += point.x;
+      sumOfX += point.x; //для каждой точки вычисляем координаты х и у и добавляем в переменные
       sumOfY += point.y;
     }
-    const centroidX = sumOfX / cluster.points.length;
+    const centroidX = sumOfX / cluster.points.length;  //вычисляем координаты новых центроидов для каждого кластера
     const centroidY = sumOfY / cluster.points.length;
     newCentroids.push({x: centroidX, y: centroidY});
   }
@@ -159,30 +153,29 @@ function updateCentroids(clusters) {
 }
 
 function kMeans(points, countOfClusters) {
-  let centroids = getRandomCentroids(countOfClusters);
+  let centroids = getRandomCentroids(countOfClusters); //берем рандомные координаты центроидов
   let clusters = [];
   for (let i = 0; i < countOfClusters; i++) {
-    const color = getRandomColor();
-    clusters.push({centroid: centroids[i], points: [], color: color});
+    const color = getRandomColor(); //берем рандомный цвет
+    clusters.push({centroid: centroids[i], points: [], color: color}); //в массив кластеров добавляем сведения о уентроиде, поставленных точках и цвете
   }
-  while (true) {
-    for (const cluster of clusters) {
-      cluster.points = [];
-    }
-    for (const point of points) {
-      const nearestPoint = nearestCentroid(point, centroids);
-      for (const cluster of clusters) {
-        if (cluster.centroid === nearestPoint) {
-          cluster.points.push(point);
-          break;
+  let signal = true;
+  while (signal) {
+    for (const point of points) { //берем каждую точку из поставленных
+      const nearestCenter = nearestCentroid(point, centroids); //высчитываем для нее координаты близжайшего центроида
+
+      for (const cluster of clusters) { //для каждого кластера
+        if (cluster.centroid === nearestCenter) { //проверяем, если центроид кластера равен близжайшему центроиду, то
+          cluster.points.push(point); //добавляем в кластер новую точку
+          signal = false;
         }
       }
     }
-    const newCentroids = updateCentroids(clusters);
-    if (centroids.toString() === newCentroids.toString()) {
-      break;
+    const newCentroids = updateCentroids(clusters); //обновляем центроиды
+    if (centroids.toString() === newCentroids.toString()) { //если центроиды идентичны, то прерываем цикл
+      signal = false;
     }
-    centroids = newCentroids;
+    centroids = newCentroids; //если центроиды разные, то обновляем центроиды
   }
-  return clusters;
+  return clusters; //возвращаем получившиеся кластеры
 }
