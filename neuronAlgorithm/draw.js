@@ -5,7 +5,7 @@ const ctx = canvas.getContext('2d');
 const canvasOffsetX = canvas.offsetLeft;
 const canvasOffsetY = canvas.offsetTop;
 
-canvas.width =500;
+canvas.width = 500;
 canvas.height = 500;
 
 let isPainting = false;
