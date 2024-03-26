@@ -62,112 +62,66 @@ function getRandomIndex(array) {
   return Math.floor(Math.random() * array.length);
 }
 
+function isValidMove(x, y, matrix) {
+  return x >= 0 && x < rows && y >= 0 && y < columns && !matrix[x][y];
+}
+
 function getMazeMatrix(matrix) {
-  let x = 0, y = 0;
-  matrix[x][y] = true;
-  let toCheck = [];
+  let stack = [];
 
-  if (y - 2 >= 0) {
-    let toCheckCell = new Cell(x, y - 2);
-    toCheck.push(toCheckCell);
-  }
-  if (y + 2 < rows) {
-    let toCheckCell = new Cell(x, y + 2);
-    toCheck.push(toCheckCell);
-  }
-  if (x - 2 >= 0) {
-    let toCheckCell = new Cell(x - 2, y);
-    toCheck.push(toCheckCell);
-  }
-  if (x + 2 < columns) {
-    let toCheckCell = new Cell(x + 2, y);
-    toCheck.push(toCheckCell);
-  }
+  let startCell = new Cell(0,0);
+  matrix[startCell.x][startCell.y] = true;
+  stack.push(startCell);
 
-  while (toCheck.length > 0) {
-    let index = getRandomIndex(toCheck);
-    let newCell = toCheck[index];
-    x = newCell.x;
-    y = newCell.y;
-    matrix[x][y] = true;
-    toCheck.splice(index, 1);
+  while (stack.length > 0) {
+    let currentCell = stack.pop();
 
-    let directions = [[x, y + 2], [x, y - 2], [x - 2, y], [x + 2, y]];
-    let randomDirection = getRandomIndex(directions);
-    switch (randomDirection) {
-      case 0: //north
-        if (y + 2 < rows && matrix[x][y + 2]) {
-          matrix[x][y + 1] = true;
-          directions.splice(0, directions.length);
-        }
-        break;
-      case 1: //south
-        if (y - 2 >= 0 && matrix[x][y - 2]) {
-          matrix[x][y - 1] = true;
-          directions.splice(0, directions.length);
-        }
-        break;
-      case 2: //west
-        if (x - 2 >= 0 && matrix[x - 2][y]) {
-          matrix[x - 1][y] = true;
-          directions.splice(0, directions.length);
-        }
-        break;
-      case 3: //east
-        if (x + 2 < columns && matrix[x + 2][y]) {
-          matrix[x + 1][y] = true;
-          directions.splice(0, directions.length);
-        }
-        break;
-    }
-    directions.splice(index, 1);
-  if (y + 2 < columns && !matrix[x][y + 2]) {
-    toCheck.push(new Cell(x, y + 2));
-  }
-  if (y - 2 >= 0 && !matrix[x][y - 2]) {
-    toCheck.push(new Cell(x, y - 2));
-  }
-  if (x + 2 < rows && !matrix[x + 2][y]) {
-    toCheck.push(new Cell(x + 2, y));
-  }
-  if (x - 2 >= 0 && !matrix[x - 2][y]) {
-    toCheck.push(new Cell(x - 2, y));
-  }
-  }
-  /*
-  for (let count = 0; count < 4; count++) {
-    let deadEnds = [];
-    for (let y = 0; y < rows; y++) {
-      for (let x = 0; x < columns; x++) {
-        if (matrix[y][x]) {
-          let neighbors = 0;
-          if (y - 1 >= 0 && matrix[x][y - 1]) {
-            neighbors++;
-          }
-          if (y + 1 < rows && matrix[x][y + 1]) {
-            neighbors++;
-          }
-          if (x - 1 >= 0 && matrix[x - 1][y]) {
-            neighbors++;
-          }
-          if (x + 1 >= 0 && matrix[x + 1][y]) {
-            neighbors++;
-          }
-          if (neighbors <= 1) {
-            deadEnds.push(new Cell(y, x));
-          }
-        }
-      }
-      for (let cell in deadEnds) {
-        matrix[cell.y][cell.x] = false;
+    let neighbors = [];
+
+    const directions = [[-2, 0], [2, 0], [0, -2], [0, 2]];
+
+    for ([dx, dy] of directions) {
+      let x = currentCell.x + dx;
+      let y = currentCell.y + dy;
+
+      if (isValidMove(x, y, matrix)) {
+        neighbors.push(new Cell(x, y));
       }
     }
-  }*/
+
+    if (neighbors.length === 0) {
+      stack.pop();
+    }
+    else {
+      stack.push(currentCell);
+      let index = getRandomIndex(neighbors);
+      let nextCell = neighbors[index];
+      let wallX = parseInt(currentCell.x + (nextCell.x - currentCell.x) / 2);
+      let wallY = parseInt(currentCell.y + (nextCell.y - currentCell.y) / 2);
+
+      matrix[wallX][wallY] = true;
+      matrix[nextCell.x][nextCell.y] = true;
+      stack.push(nextCell);
+    }
+  }
   return matrix;
 }
 
+function isValidMaze(matrix) {
+  for (let y = 0; y < rows; y += 2) {
+    for (let x = 0; x < columns; x += 2) {
+      if (!matrix[y][x]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 let matrix = createMatrix(columns, rows);
-matrix = getMazeMatrix(matrix);
+while (!isValidMaze(matrix)){
+  matrix = getMazeMatrix(matrix);
+}
 
 drawMaze(matrix);
 
