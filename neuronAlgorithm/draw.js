@@ -6,7 +6,7 @@ const canvasOffsetX = canvas.offsetLeft;
 const canvasOffsetY = canvas.offsetTop;
 
 canvas.width = 500;
-canvas.height = 500;
+canvas.height =500;
 
 let isPainting = false;
 let lineWidth = 5;

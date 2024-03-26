@@ -12,7 +12,7 @@ body {
   background-color: hotpink;
 }
 h1 {
-  background: #7F7FD5;
+  background:#7F7FD5;
   background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
   background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
   background-clip: text;
