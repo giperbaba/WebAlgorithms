@@ -94,6 +94,7 @@ function getMazeMatrix(matrix) {
     }
     else {
       stack.push(currentCell);
+
       let index = getRandomIndex(neighbors);
       let nextCell = neighbors[index];
       let wallX = parseInt(currentCell.x + (nextCell.x - currentCell.x) / 2);
