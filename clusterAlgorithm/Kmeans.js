@@ -6,9 +6,10 @@ canvas.width = canvasWidthNum;
 canvas.height = canvas.width;
 
 const add = document.getElementById('add');
-const erase = document.getElementById('delete');
+const deletePoint = document.getElementById('delete');
 const deleteAll = document.getElementById('deleteAll');
-const startK = document.getElementById('startK');
+const startKMeansAlgorithm = document.getElementById('startKMeansAlgorithm');
+const startHierarchyAlgorithm = document.getElementById('startHierarchyAlgorithm')
 
 let radius = 15;
 let circles = [];
@@ -18,7 +19,7 @@ add.addEventListener('click', function () {
   flag = 1;
 });
 
-erase.addEventListener('click', function () {
+deletePoint.addEventListener('click', function () {
   flag = 2;
 });
 deleteAll.addEventListener('click', function () {
@@ -32,18 +33,18 @@ deleteAll.addEventListener('click', function () {
 
 canvas.addEventListener('click', function(event) {
   if (flag === 1) {
-    const x = event.clientX - canvas.offsetLeft; // получаем координату X курсора относительно левого края элемента canvas.
-    const y = event.clientY - canvas.offsetTop; //мы получаем координату Y курсора относительно верхнего края элемента canvas.
+    let x = event.clientX - canvas.offsetLeft; // получаем координату X курсора относительно левого края элемента canvas.
+    let y = event.clientY - canvas.offsetTop; //мы получаем координату Y курсора относительно верхнего края элемента canvas.
     drawPoint(x,y,radius);
   }
   else if (flag === 2) {
-    const x = event.clientX - canvas.offsetLeft;
-    const y = event.clientY - canvas.offsetTop;
+    let x = event.clientX - canvas.offsetLeft;
+    let y = event.clientY - canvas.offsetTop;
     clear(x,y,radius);
   }
 });
 
-startK.addEventListener('click', function () {
+startKMeansAlgorithm.addEventListener('click', function () {
   let countOfClusters = document.getElementById("sizeK").value;
   if (circles.length === 0){
     alert("Добавь точки");
@@ -86,7 +87,7 @@ function drawPoint(x, y, r) {
 
 function clear(x, y, r){
   for (let i = 0; i < circles.length; i++) { //проходимся по нарисованным точкам
-    const dist = Math.sqrt((x - circles[i].x) ** 2 + (y - circles[i].y) ** 2); // вычисляем расстояние между точками
+    let dist = Math.sqrt((x - circles[i].x) ** 2 + (y - circles[i].y) ** 2); // вычисляем расстояние между точками
     if (dist <= circles[i].r) { //если расстояние меньше, чем радиус, то есть мышка заходит на окружность
       ctx.beginPath();
       ctx.rect(0, 0, canvas.width, canvas.height); //очищаем канву от ненужной точки в белый
@@ -106,12 +107,12 @@ function clear(x, y, r){
 
 function getRandomColor() {
   let color = '#';
-  const randomColor = Math.floor(Math.random()*16777215).toString(16)
+  let randomColor = Math.floor(Math.random()*16777215).toString(16)
   color += randomColor;
   return color;
 }
 function distance(firstPoint, secondPoint) {
-  return Math.sqrt(Math.pow(firstPoint.x - secondPoint.x, 2) + Math.pow(firstPoint.y - secondPoint.y, 2));
+  return Math.sqrt(Math.pow(Math.max(firstPoint.x, secondPoint.x) - Math.min(firstPoint.x, secondPoint.x), 2) + Math.pow(Math.max(firstPoint.y, secondPoint.y) - Math.min(firstPoint.y, secondPoint.y), 2));
 }
 function nearestCentroid(point, centroids) {
   let minDistance = Infinity;
@@ -127,10 +128,10 @@ function nearestCentroid(point, centroids) {
 }
 
 function getRandomCentroids(countOfClusters) { //вычисляем координаты рандомных центроидов
-  const centroids = [];
+  let centroids = [];
   for (let i = 0; i < countOfClusters; i++) {
-    const x = Math.floor(Math.random() * canvas.width); //Math.random() генерирует число от 0 до 1
-    const y = Math.floor(Math.random() * canvas.height);
+    let x = Math.floor(Math.random() * canvas.width); //Math.random() генерирует число от 0 до 1
+    let y = Math.floor(Math.random() * canvas.height);
     centroids.push({x, y});
   }
   return centroids;
@@ -145,8 +146,8 @@ function updateCentroids(clusters) {
       sumOfX += point.x; //для каждой точки вычисляем координаты х и у и добавляем в переменные
       sumOfY += point.y;
     }
-    const centroidX = sumOfX / cluster.points.length;  //вычисляем координаты новых центроидов для каждого кластера
-    const centroidY = sumOfY / cluster.points.length;
+    let centroidX = sumOfX / cluster.points.length;  //вычисляем координаты новых центроидов для каждого кластера
+    let centroidY = sumOfY / cluster.points.length;
     newCentroids.push({x: centroidX, y: centroidY});
   }
   return newCentroids;
@@ -171,11 +172,79 @@ function kMeans(points, countOfClusters) {
         }
       }
     }
-    const newCentroids = updateCentroids(clusters); //обновляем центроиды
+    let newCentroids = updateCentroids(clusters); //обновляем центроиды
     if (centroids.toString() === newCentroids.toString()) { //если центроиды идентичны, то прерываем цикл
       signal = false;
     }
     centroids = newCentroids; //если центроиды разные, то обновляем центроиды
   }
   return clusters; //возвращаем получившиеся кластеры
+}
+
+startHierarchyAlgorithm.addEventListener('click', function () {
+  let countOfClusters = document.getElementById("sizeK").value;
+  if (circles.length === 0){
+    alert("Добавь точки");
+  }
+  else if(circles.length < countOfClusters) {
+    alert("Количество кластеров не может быть больше, чем количество точек");
+  }
+  else{
+    let clusters = hierarchy(circles, countOfClusters);
+    for (let i = 0; i < clusters.length; i++) {
+      let color = getRandomColor();
+      for (let j = 0; j < clusters[i].length; j++) {
+        let point = clusters[i][j];
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
+        ctx.fillStyle = color;
+        ctx.fill();
+      }
+    }
+  }
+});
+
+function countDist(firstCluster, secondCluster) {
+  let minDist = Infinity;
+  for (let i = 0; i < firstCluster.length; i++) {
+    for (let j = 0; j < secondCluster.length; j++) {
+      let dist = distance(firstCluster[i], secondCluster[j]);
+      if (dist < minDist) {
+        minDist = dist;
+      }
+    }
+  }
+  return minDist;
+}
+
+function indexOfClusters(clusters) {
+  let minDist = Infinity;
+  let row, column;
+  for (let i = 0; i < clusters.length; i++) {
+    for (let j = i + 1; j < clusters.length; j++) {
+      let dist = countDist(clusters[i], clusters[j]);
+      if (dist < minDist) {
+        minDist = dist;
+        row = i;
+        column = j;
+      }
+    }
+  }
+  return [row, column];
+}
+function hierarchy(points, countOfClusters) {
+
+  let clusters = [];
+  for (let i = 0; i < points.length; i++) {
+    clusters.push([points[i]]);
+  }
+  while (clusters.length > countOfClusters) {
+    let [row, column] = indexOfClusters(clusters);
+    let newCluster = clusters[row].concat(clusters[column]);
+    clusters.splice(column, 1);
+    clusters.splice(row, 1);
+    clusters.push(newCluster)
+  }
+
+  return clusters;
 }

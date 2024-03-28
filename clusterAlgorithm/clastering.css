@@ -85,7 +85,7 @@ body {
 
 
 .bg-ex-fixed{
-  background: url("6243378.jpg"); /* Путь к картинке */
+  background: url("pictures/webAlgorithms.svg"); /* Путь к картинке */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
