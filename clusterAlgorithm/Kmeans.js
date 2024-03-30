@@ -9,7 +9,8 @@ const add = document.getElementById('add');
 const deletePoint = document.getElementById('delete');
 const deleteAll = document.getElementById('deleteAll');
 const startKMeansAlgorithm = document.getElementById('startKMeansAlgorithm');
-const startHierarchyAlgorithm = document.getElementById('startHierarchyAlgorithm')
+const startHierarchyAlgorithm = document.getElementById('startHierarchyAlgorithm');
+const compareAlgorithms = document.getElementById('compareAlgorithms');
 
 let radius = 15;
 let circles = [];
@@ -44,31 +45,11 @@ canvas.addEventListener('click', function(event) {
   }
 });
 
-startKMeansAlgorithm.addEventListener('click', function () {
-  let countOfClusters = document.getElementById("sizeK").value;
-  if (circles.length === 0){
-    alert("Добавь точки");
-  }
-  else if(circles.length < countOfClusters) {
-    alert("Количество кластеров не может быть больше, чем количество точек");
-  }
-  else{
-    let clusters = kMeans(circles,countOfClusters);
-    for (const cluster of clusters) {
-      ctx.fillStyle = cluster.color;
-      for (const point of cluster.points) {
-        ctx.beginPath();
-        ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
-        ctx.fill();
-      }
-    }
-  }
-});
-
 ctx.beginPath();
 ctx.rect(0, 0, canvas.width, canvas.height);
 ctx.fillStyle = "white";
 ctx.fill();
+
 class Point {
   constructor(x, y, r) {
     this.x = x;
@@ -181,6 +162,27 @@ function kMeans(points, countOfClusters) {
   return clusters; //возвращаем получившиеся кластеры
 }
 
+startKMeansAlgorithm.addEventListener('click', function () {
+  let countOfClusters = document.getElementById("sizeK").value;
+  if (circles.length === 0){
+    alert("Добавь точки");
+  }
+  else if(circles.length < countOfClusters) {
+    alert("Количество кластеров не может быть больше, чем количество точек");
+  }
+  else{
+    let clusters = kMeans(circles,countOfClusters);
+    for (const cluster of clusters) {
+      ctx.fillStyle = cluster.color;
+      for (const point of cluster.points) {
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+    }
+  }
+});
+
 startHierarchyAlgorithm.addEventListener('click', function () {
   let countOfClusters = document.getElementById("sizeK").value;
   if (circles.length === 0){
@@ -248,3 +250,35 @@ function hierarchy(points, countOfClusters) {
 
   return clusters;
 }
+
+compareAlgorithms.addEventListener('click', function () {
+  let countOfClusters = document.getElementById("sizeK").value;
+  if (circles.length === 0){
+    alert("Добавь точки");
+  }
+  else if(circles.length < countOfClusters) {
+    alert("Количество кластеров не может быть больше, чем количество точек");
+  }
+  else{
+    let hierarchyClusters = hierarchy(circles, countOfClusters);
+    let kMeansClusters = kMeans(circles, countOfClusters);
+    for (let i = 0; i < hierarchyClusters.length; i++) {
+      let color = getRandomColor();
+      for (let j = 0; j < hierarchyClusters[i].length; j++) {
+        let point = hierarchyClusters[i][j];
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, radius, 0, Math.PI);
+        ctx.fillStyle = color;
+        ctx.fill();
+      }
+    }
+    for (const cluster of kMeansClusters) {
+      ctx.fillStyle = cluster.color;
+      for (const point of cluster.points) {
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, radius, Math.PI, 2 * Math.PI);
+        ctx.fill();
+      }
+    }
+  }
+});

@@ -10,6 +10,17 @@
   border: 5px solid hotpink;
 }
 
+#buttons {
+  background-color: black;
+  border: none;
+  color: white;
+  padding: 14px 30px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
 html,
 body {
   margin: 0;
