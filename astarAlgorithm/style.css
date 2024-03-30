@@ -7,6 +7,7 @@
 #canvas {
   width: 550px;
   border: 1px solid rosybrown;
+  background: rosybrown;
 }
 
 .buttons{
@@ -15,6 +16,9 @@
   font-size: 25px;
 }
 
+.text {
+  font-size: 15px;
+}
 
 
 
