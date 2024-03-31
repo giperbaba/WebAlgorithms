@@ -1,58 +1,47 @@
-const canvas = document.getElementById('drawing-board');
-const toolbar = document.getElementById('toolbar');
+const canvas = document.querySelector('canvas');
+const clear = document.getElementById('clear');
 const ctx = canvas.getContext('2d');
 
 const canvasOffsetX = canvas.offsetLeft;
 const canvasOffsetY = canvas.offsetTop;
-
 canvas.width = 500;
-canvas.height =500;
+canvas.height = 500;
 
-let isPainting = false;
-let lineWidth = 5;
-let startX;
-let startY;
+ctx.strokeStyle = 'white';
+ctx.fillStyle = 'black';
+ctx.lineWidth = 10;
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-toolbar.addEventListener('click', e => {
+
+let isDrawing = false;
+
+
+clear.addEventListener('click', e => {
   if (e.target.id === 'clear') {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 });
 
-toolbar.addEventListener('change', e => {
-  if(e.target.id === 'stroke') {
-    ctx.strokeStyle = e.target.value;
-  }
+function startDrawing(e) {
+  isDrawing = true;
+  ctx.beginPath();
+  ctx.moveTo(e.offsetX, e.offsetY);
+}
 
-  if(e.target.id === 'lineWidth') {
-    lineWidth = e.target.value;
-  }
+// Функция, завершающая рисование
+function stopDrawing() {
+  isDrawing = false;
+}
 
-});
-
-const draw = (e) => {
-  if(!isPainting) {
-    return;
-  }
-
-  ctx.lineWidth = lineWidth;
-  ctx.lineCap = 'round';
-
-  ctx.lineTo(e.clientX - canvasOffsetX, e.clientY);
+// Функция, рисующая линию
+function drawLine(e) {
+  if (!isDrawing) return;
+  ctx.lineTo(e.offsetX, e.offsetY);
   ctx.stroke();
 }
 
-canvas.addEventListener('mousedown', (e) => {
-  isPainting = true;
-  startX = e.clientX;
-  startY = e.clientY;
-});
-
-canvas.addEventListener('mouseup', e => {
-  isPainting = false;
-  ctx.stroke();
-  ctx.beginPath();
-});
-
-canvas.addEventListener('mousemove', draw);
-
+// Добавляем обработчики событий
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('mousemove', drawLine);
