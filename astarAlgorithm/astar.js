@@ -269,6 +269,9 @@ async function astar() {
       check(neighbor, currentNode);
     }
   }
+  if (!found) {
+    alert("Дома не было кровати... 😈")
+  }
 }
 
 function main() {
@@ -312,6 +315,9 @@ document.addEventListener('keydown', function (event) {
 begin.addEventListener('click', async function () {
   if (startCell.x !== null && finishCell.x !== null) {
     await astar();
+  }
+  else {
+    alert("Лееее, жидкий, а гиде старт и финиш?😢")
   }
 });
 
@@ -385,7 +391,7 @@ function clickButton() {
         let y = Math.trunc(coordinateY / cellSize);
 
         if (!matrix[y][x]) {
-          matrix[x][y] = true;
+          matrix[y][x] = true;
           drawCell(x, y, "white");
         }
       }
@@ -407,7 +413,7 @@ function clickButton() {
         let y = Math.trunc(coordinateY / cellSize);
 
         if (matrix[y][x]) {
-          matrix[x][y] = false;
+          matrix[y][x] = false;
           drawCell(x, y, mazeColor);
         }
       }
