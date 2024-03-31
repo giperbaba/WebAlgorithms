@@ -7,8 +7,6 @@ let canvasWidthNum = parseInt(canvasWidth.replace("px", ""));
 canvas.width = canvasWidthNum;
 canvas.height = canvas.width;
 
-let matrix;
-
 let start = document.getElementById('start');
 let finish = document.getElementById('finish');
 let erase = document.getElementById('erase');
@@ -20,14 +18,21 @@ let columns = document.getElementById("sizeM").value;
 let rows = columns;
 let cellSize = (canvas.width - paddingJS * 2) / columns;
 
-let startCellColor = "#5d001E";
-let finishCellColor = "#EE4C7C";
-let mazeColor = "rosybrown";
+let mazeColor = "#4E4E50";
+let startCellColor = "#4D6D9A";
+let finishCellColor = "#99C";
+
+let pathCellColor = "#99CED3";
+let neighborCellColor = "#5F6366";
+let finishPathColor = "#EDB5BF";
 
 let startClicker = false;
 let finishClicker = false;
 let eraseClicker = false;
 let wallClicker = false;
+let found = false;
+
+let matrix = createMatrix(columns, rows);
 
 class Cell {
   constructor(x, y) {
@@ -38,6 +43,16 @@ class Cell {
 
 let startCell = new Cell(null, null);
 let finishCell = new Cell(null, null);
+
+class Node {
+  constructor(g, parent = Node, position = Cell) {
+    this.parent = parent;
+    this.position = position;
+    this.g = g;
+    this.h = Math.abs(finishCell.x - position.x) + Math.abs(finishCell.y - position.y);
+    this.f = this.h + this.g;
+  }
+}
 
 function drawCell(x, y, color) {
   context.beginPath();
@@ -92,46 +107,44 @@ function isValidMove(x, y, matrix) {
   return x >= 0 && x < rows && y >= 0 && y < columns && !matrix[x][y];
 }
 
+const directions = [[0, -1], [0, 1], [-1, 0], [1, 0]]
+
 function getMazeMatrix(matrix) {
   let stack = [];
 
-  let startCell = new Cell(0,0);
+  let startCell = new Cell(0, 0);
   matrix[startCell.x][startCell.y] = true;
   stack.push(startCell);
 
   while (stack.length > 0) {
     let currentCell = stack.pop();
 
-    let neighbors = [];
+    let x = currentCell.x;
+    let y = currentCell.y;
 
-    const directions = [[-2, 0], [2, 0], [0, -2], [0, 2]];
+    let currentDirections = mixArray(directions);
 
-    for ([dx, dy] of directions) {
-      let x = currentCell.x + dx;
-      let y = currentCell.y + dy;
+    for (let direction of currentDirections) {
+      let [dx, dy] = direction;
+      let newCell = new Cell(x + dx * 2, y + dy * 2);
 
-      if (isValidMove(x, y, matrix)) {
-        neighbors.push(new Cell(x, y));
+      if (isValidMove(newCell.x, newCell.y, matrix)) {
+        matrix[newCell.x][newCell.y] = true;
+        matrix[(x + newCell.x) / 2][(y + newCell.y) / 2] = true;
+
+        stack.push(newCell);
       }
-    }
-
-    if (neighbors.length === 0) {
-      stack.pop();
-    }
-    else {
-      stack.push(currentCell);
-
-      let index = getRandomIndex(neighbors);
-      let nextCell = neighbors[index];
-      let wallX = parseInt(currentCell.x + (nextCell.x - currentCell.x) / 2);
-      let wallY = parseInt(currentCell.y + (nextCell.y - currentCell.y) / 2);
-
-      matrix[wallX][wallY] = true;
-      matrix[nextCell.x][nextCell.y] = true;
-      stack.push(nextCell);
     }
   }
   return matrix;
+}
+
+function mixArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = getRandomIndex(array);
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 
 function isValidMaze(matrix) {
@@ -145,32 +158,133 @@ function isValidMaze(matrix) {
   return true;
 }
 
-function generateMaze() {
-  context.rect(0, 0, canvas.width, canvas.height);
-  context.fillStyle = mazeColor;
-  context.fill();
+let open = [];
+let close = [];
 
-  columns = document.getElementById("sizeM").value;
-  matrix = createMatrix(columns, columns);
-
-  while (!isValidMaze(matrix)) {
-    matrix = getMazeMatrix(matrix);
-  }
-  drawMaze();
-  requestAnimationFrame(clickButton);
+function compare (a, b) {
+  return a.f - b.f;
 }
 
-function main(){
+function returnPath(finalNode) {
+  let parent = finalNode.parent;
+  while (parent.parent != null) {
+    drawCell(parent.position.x, parent.position.y, finishPathColor);
+    parent = parent.parent;
+  }
+}
+
+function delay(timeout) {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+}
+
+function check(neighbor, currentNode) {
+  if (neighbor.position.x === finishCell.x && neighbor.position.y === finishCell.y) {
+    return;
+  }
+
+  if (close.some(node => node.position.x === neighbor.position.x && node.position.y === neighbor.position.y)) {
+    return;
+  }
+
+  let newG = currentNode.g + 1;
+
+  let isOpen = open.some(node => node.position.x === neighbor.position.x && node.position.y === neighbor.position.y);
+
+  if (!isOpen || newG < neighbor.g) {
+    neighbor.g = newG;
+    neighbor.parent = currentNode;
+
+    if (!isOpen) {
+      open.push(neighbor);
+      drawCell(neighbor.position.x, neighbor.position.y, neighborCellColor);
+    }
+  }
+}
+
+async function astar() {
+  if (found) {
+    return;
+  }
+
+  let startNode = new Node(0, null, startCell);
+
+  open.push(startNode);
+  while (!found && open.length > 0) {
+    open.sort(compare);
+
+    let currentNode = open.shift();
+
+    if (currentNode.position.x === finishCell.x && currentNode.position.y === finishCell.y) {
+      found = true;
+    }
+
+    let x = currentNode.position.x;
+    let y = currentNode.position.y;
+
+    close.push(currentNode);
+
+    if (currentNode.position !== startCell) {
+      drawCell(x, y, pathCellColor);
+    }
+
+    await delay(20);
+
+    if (y > 0 && matrix[y - 1][x]) {
+      let position = new Cell(x, y - 1);
+      let neighbor = new Node(currentNode.g + 1, currentNode, position);
+      if (neighbor.position.x === finishCell.x && neighbor.position.y === finishCell.y) {
+        found = true;
+        returnPath(neighbor);
+      }
+      check(neighbor, currentNode);
+    }
+
+    if (y < rows - 1 && matrix[y + 1][x]) {
+      let position = new Cell(x, y + 1);
+      let neighbor = new Node(currentNode.g + 1, currentNode, position);
+      if (neighbor.position.x === finishCell.x && neighbor.position.y === finishCell.y) {
+        found = true;
+        returnPath(neighbor);
+      }
+      check(neighbor, currentNode);
+    }
+
+    if (x > 0 && matrix[y][x - 1]) {
+      let position = new Cell(x - 1, y);
+      let neighbor = new Node(currentNode.g + 1, currentNode, position);
+      if (neighbor.position.x === finishCell.x && neighbor.position.y === finishCell.y) {
+        found = true;
+        returnPath(neighbor);
+      }
+      check(neighbor, currentNode);
+    }
+
+    if (x < columns - 1 && matrix[y][x + 1]) {
+      let position = new Cell(x + 1, y);
+      let neighbor = new Node(currentNode.g + 1, currentNode, position);
+      if (neighbor.position.x === finishCell.x && neighbor.position.y === finishCell.y) {
+        found = true;
+        returnPath(neighbor);
+      }
+      check(neighbor, currentNode);
+    }
+  }
+}
+
+function main() {
   while (!isValidMaze(matrix)) {
     matrix = getMazeMatrix(matrix);
-    requestAnimationFrame(clickButton);
   }
   drawMaze(matrix);
 }
 
 function refresh() {
+  open = [];
+  close = [];
+
   columns = document.getElementById("sizeM").value;
-  matrix = createMatrix(columns, columns);
+  rows = columns;
+  matrix = createMatrix(columns, rows);
   cellSize = (canvas.width - paddingJS * 2) / columns;
 
   startCell = new Cell(null, null);
@@ -180,12 +294,28 @@ function refresh() {
   finishClicker = false;
   eraseClicker = false;
   wallClicker = false;
+  found = false;
 
   main();
 }
 
-function clickButton() {
+document.addEventListener('DOMContentLoaded', function () {
+  refresh();
+});
 
+document.addEventListener('keydown', function (event) {
+  if (event.code === 'Enter') {
+    refresh();
+  }
+});
+
+begin.addEventListener('click', async function () {
+  if (startCell.x !== null && finishCell.x !== null) {
+    await astar();
+  }
+});
+
+function clickButton() {
   start.addEventListener('click', function () {
     startClicker = true;
     finishClicker = false;
@@ -194,6 +324,10 @@ function clickButton() {
 
     canvas.addEventListener('mousedown', function (e) {
       if (startClicker && !finishClicker && !eraseClicker && !wallClicker) {
+        if (startCell.x !== null) {
+          drawCell(startCell.x, finishCell.y, "white");
+          startCell = new Cell(null, null);
+        }
         let coordinateX = e.pageX - this.offsetLeft;
         let coordinateY = e.pageY - this.offsetTop;
 
@@ -217,6 +351,10 @@ function clickButton() {
 
     canvas.addEventListener('mousedown', function (e) {
       if (!startClicker && finishClicker && !eraseClicker && !wallClicker) {
+        if (finishCell.x !== null) {
+          drawCell(finishCell.x, finishCell.y, "white");
+          finishCell = new Cell(null, null);
+        }
         let coordinateX = e.pageX - this.offsetLeft;
         let coordinateY = e.pageY - this.offsetTop;
 
@@ -276,3 +414,5 @@ function clickButton() {
     });
   });
 }
+
+clickButton();
