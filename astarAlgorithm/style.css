@@ -6,19 +6,31 @@
 
 #canvas {
   width: 550px;
-  border: 1px solid rosybrown;
-  background: rosybrown;
 }
 
 .buttons{
   display: inline-block;
   padding: 12px 28px;
   font-size: 25px;
+  background-color: rgba(79, 63, 101, 0.6)
 }
 
 .text {
   font-size: 15px;
+  color: aliceblue;
 }
 
+#main{
+  background: url("img/geekbrains.by-kak-sdelat-fon-html.svg"); /* Путь к картинке */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Закрепляем изображение */
+  min-height: 100%;
+  min-width: 640px;
+  width: 100%;
+  height: auto;
+  position: fixed;
+}
 
 

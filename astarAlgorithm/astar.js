@@ -80,13 +80,6 @@ function createMatrix(columns, rows) {
 }
 
 function drawMaze() {
-  if (startCell.x !== null) {
-    drawCell(startCell.x, startCell.y, startCellColor);
-  }
-  if (finishCell.x !== null) {
-    drawCell(finishCell.x, finishCell.y, finishCellColor);
-  }
-
   context.beginPath();
   context.rect(0, 0, canvas.width, canvas.height);
   context.fillStyle = mazeColor;
@@ -96,6 +89,12 @@ function drawMaze() {
       const color = (matrix[y][x]) ? "white" : mazeColor;
       drawCell(x, y, color);
     }
+  }
+  if (startCell.x != null) {
+    drawCell(startCell.x, startCell.y, startCellColor);
+  }
+  if (finishCell.x != null) {
+    drawCell(finishCell.x, finishCell.y, finishCellColor);
   }
 }
 
@@ -340,10 +339,10 @@ function clickButton() {
         let x = Math.trunc(coordinateX / cellSize);
         let y = Math.trunc(coordinateY / cellSize);
 
-        if (matrix[y][x] && (finishCell.x !== x || finishCell.y !== y)) {
+        if (matrix[y][x] && (finishCell.x !== x && finishCell.y !== y)) {
           startCell.x = x;
           startCell.y = y;
-          drawCell(startCell.x, startCell.y, startCellColor);
+          drawMaze();
         }
       }
     });
@@ -367,10 +366,10 @@ function clickButton() {
         let x = Math.trunc(coordinateX / cellSize);
         let y = Math.trunc(coordinateY / cellSize);
 
-        if (matrix[y][x] && (startCell.x !== x || startCell.y !== y)) {
+        if (matrix[y][x] && (startCell.x !== x && startCell.y !== y)) {
           finishCell.x = x;
           finishCell.y = y;
-          drawCell(finishCell.x, finishCell.y, finishCellColor);
+          drawMaze();
         }
       }
     });
@@ -392,7 +391,7 @@ function clickButton() {
 
         if (!matrix[y][x]) {
           matrix[y][x] = true;
-          drawCell(x, y, "white");
+          drawMaze();
         }
       }
     });
@@ -414,7 +413,7 @@ function clickButton() {
 
         if (matrix[y][x]) {
           matrix[y][x] = false;
-          drawCell(x, y, mazeColor);
+          drawMaze();
         }
       }
     });
