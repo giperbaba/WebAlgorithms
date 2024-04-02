@@ -1,11 +1,9 @@
-// import {mnistData} from "./mnistData.js"
 
 class NeuralNetwork {
-    constructor(sizes) {
-        this.numLayers = sizes.length;
-        this.sizes = sizes;
-        this.biases = sizes.slice(1).map(size => Array.from({ length: size }, () => Math.random())); // Инициализация смещений случайными значениями
-        this.weights = sizes.slice(1).map((size, i) => Array.from({ length: size }, () => Array.from({ length: sizes[i] }, () =>Math.random() * (0.5 + 0.5) - 0.5))); // Инициализация весов случайными значениями
+    constructor() {
+        // this.biases;
+        // this.weights;
+      //импортирование весов из файла после обучения
     }
 
   sigmoid(x)
@@ -33,10 +31,5 @@ class NeuralNetwork {
 
 }
 
-
-// Пример использования:
-const sizes = [785, 16,16, 10]; // Нейронная сеть с 2 входами, 3 нейронами в скрытом слое и 1 нейроном на выходе
-const net = new NeuralNetwork(sizes);
-
-console.log(net.weights)
+const net = new NeuralNetwork();
 
