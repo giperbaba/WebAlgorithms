@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Муравьинный алгоритм</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div id="main">
+  <div id="ant">
+    <canvas id="canvas"></canvas>
+    <div class ="buttons">
+      <br><button id="add">добавить <br>вершину</button>
+      <br><button id="clear" onclick="refresh()">очистить <br>экран</button>
+      <div>
+        <p class="text">Количество <br>феромона: <span id="QValue">0</span></p>
+        <label>
+          <input id="Q" type="range" min="0" max="50" value="0" onchange="updateValueQ(this.value)">
+        </label>
+
+        <p class="text">Вес ребра 𝛼: <span id="alfaValue">0</span></p>
+        <label>
+          <input id="𝛼" type="range" min="0" max="50" value="0" onchange="updateValueAlfa(this.value)">
+        </label>
+
+        <p class="text">Интенсивность <br>феромонов 𝛽: <span id="betaValue">0</span></p>
+        <label>
+          <input id="𝛽" type="range" min="0" max="50" value="0" onchange="updateValueBeta(this.value)">
+        </label>
+
+        <br><button id="begin">начать</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="script.js"></script>
+</body>
+
+</html>
