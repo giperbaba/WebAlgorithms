@@ -333,8 +333,9 @@ function clickButton() {
           drawCell(startCell.x, finishCell.y, "white");
           startCell = new Cell(null, null);
         }
-        let coordinateX = e.pageX - this.offsetLeft;
-        let coordinateY = e.pageY - this.offsetTop;
+
+        let coordinateX = e.offsetX;
+        let coordinateY = e.offsetY;
 
         let x = Math.trunc(coordinateX / cellSize);
         let y = Math.trunc(coordinateY / cellSize);
@@ -360,8 +361,8 @@ function clickButton() {
           drawCell(finishCell.x, finishCell.y, "white");
           finishCell = new Cell(null, null);
         }
-        let coordinateX = e.pageX - this.offsetLeft;
-        let coordinateY = e.pageY - this.offsetTop;
+        let coordinateX = e.offsetX;
+        let coordinateY = e.offsetY;
 
         let x = Math.trunc(coordinateX / cellSize);
         let y = Math.trunc(coordinateY / cellSize);
@@ -383,8 +384,8 @@ function clickButton() {
 
     canvas.addEventListener('mousedown', function (e) {
       if (!startClicker && !finishClicker && eraseClicker && !wallClicker) {
-        let coordinateX = e.pageX - this.offsetLeft;
-        let coordinateY = e.pageY - this.offsetTop;
+        let coordinateX = e.offsetX;
+        let coordinateY = e.offsetY;
 
         let x = Math.trunc(coordinateX / cellSize);
         let y = Math.trunc(coordinateY / cellSize);
@@ -405,8 +406,8 @@ function clickButton() {
 
     canvas.addEventListener('mousedown', function (e) {
       if (!startClicker && !finishClicker && !eraseClicker && wallClicker) {
-        let coordinateX = e.pageX - this.offsetLeft;
-        let coordinateY = e.pageY - this.offsetTop;
+        let coordinateX = e.offsetX;
+        let coordinateY = e.offsetY;
 
         let x = Math.trunc(coordinateX / cellSize);
         let y = Math.trunc(coordinateY / cellSize);
