@@ -19,17 +19,17 @@
       <div>
         <p class="text">Количество <br>феромона: <span id="QValue">0</span></p>
         <label>
-          <input id="Q" type="range" min="0" max="50" value="0" onchange="updateValueQ(this.value)">
+          <input id="Q" type="range" min="1" max="10" value="0" onchange="updateValueQ(this.value)">
         </label>
 
-        <p class="text">Вес ребра 𝛼: <span id="alfaValue">0</span></p>
+        <p class="text">Вес ребра 𝛼: <span id="alfaValue">1</span></p>
         <label>
-          <input id="𝛼" type="range" min="0" max="50" value="0" onchange="updateValueAlfa(this.value)">
+          <input id="𝛼" type="range" min="1" max="5" value="1" onchange="updateValueAlfa(this.value)">
         </label>
 
-        <p class="text">Интенсивность <br>феромонов 𝛽: <span id="betaValue">0</span></p>
+        <p class="text">Интенсивность <br>феромонов 𝛽: <span id="betaValue">3</span></p>
         <label>
-          <input id="𝛽" type="range" min="0" max="50" value="0" onchange="updateValueBeta(this.value)">
+          <input id="𝛽" type="range" min="1" max="5" value="3" onchange="updateValueBeta(this.value)">
         </label>
 
         <br><button id="begin">начать</button>
