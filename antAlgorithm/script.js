@@ -11,27 +11,24 @@ const paddingJS = 3;
 
 let mazeColor = "#4E4E50";
 let startCellColor = "#4D6D9A";
-let finishCellColor = "#99C";
+let citiesColor = "#99C";
 
-let pathCellColor = "#99CED3";
+let pheromonePathColor = "#99CED3";
 let neighborCellColor = "#5F6366";
 let finishPathColor = "#EDB5BF";
 
 let radius = 6;
-let circles = [];
+let vertices = [];
+let visited = [];
+let matrix = [];
+let countOfAnts = 10000;
+let pheromonePathWidth = 1;
 
 let add = document.getElementById('add');
 let QValue = document.getElementById('QValue');
 let alfaValue = document.getElementById('alfaValue');
 let betaValue = document.getElementById('betaValue');
 
-add.addEventListener('click', function () {
-  canvas.addEventListener('click', function(event) {
-    let x = event.offsetX; // получаем координату X курсора относительно левого края элемента canvas.
-    let y = event.offsetY; //мы получаем координату Y курсора относительно верхнего края элемента canvas.
-    drawPoint(x, y, radius);
-  });
-});
 
 class Point {
   constructor(x, y, r) {
@@ -39,14 +36,41 @@ class Point {
     this.y = y;
     this.r = r;
   }
+
+  distanceTo(otherPoint) {
+    const deltaX = this.x - otherPoint.x;
+    const deltaY = this.y - otherPoint.y;
+    return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+  }
 }
+
 function drawPoint(x, y, r) {
   context.beginPath();
   context.arc(x, y,  r, 0,Math.PI * 2);
-  context.fillStyle = finishCellColor;
+  context.fillStyle = mazeColor;
   context.fill();
-  let point = new Point(x, y, r); //point - координаты, поставленной точки
-  circles.push(point); //обновляем массив с точками после каждой новой нарисованной точки
+  let currentPoint = new Point(x, y, r);
+
+  if (vertices.length >= 1) {
+    for (let vert of vertices) {
+      context.moveTo(currentPoint.x, currentPoint.y);
+      context.lineTo(vert.x, vert.y);
+      context.strokeStyle = pheromonePathColor;
+      context.lineWidth = pheromonePathWidth;
+      context.stroke();
+    }
+  }
+  vertices.push(currentPoint);
+  drawAllPoints();
+}
+
+function drawAllPoints() {
+  for (let vert of vertices) {
+    context.beginPath();
+    context.arc(vert.x, vert.y,  radius, 0,Math.PI * 2);
+    context.fillStyle = mazeColor;
+    context.fill();
+  }
 }
 
 function refresh() {
@@ -54,12 +78,47 @@ function refresh() {
   context.rect(0, 0, canvas.width, canvas.height);
   context.fillStyle = "white";
   context.fill();
-  circles = [];
+  vertices = [];
+  visited = [];
 }
+
+function getRandomValue(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+function createMatrix(size) {
+  let matrix = new Array(size);
+
+  for (let x = 0; x < size; x++) {
+    let temp = new Array(size);
+    for (let y = 0; y < size; y++) {
+      let distance = new Point(x, y, radius);
+      temp[y] = false;
+    }
+    matrix[x] = temp;
+  }
+  return matrix;
+}
+
+//---------------------buttons---------------------
 
 document.addEventListener('DOMContentLoaded', function () {
   refresh();
 });
+
+let flag = true;
+add.addEventListener('click', function () {
+  flag = true;
+});
+
+canvas.addEventListener('click', function(event) {
+  if (flag) {
+    let x = event.offsetX;
+    let y = event.offsetY;
+    drawPoint(x, y, radius);
+  }
+});
+
 
 function updateValueQ(value) {
   QValue.innerText = value;
