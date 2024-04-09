@@ -15,19 +15,25 @@
 
     <div id="canva">
       <canvas id="canvas"></canvas>
-
+      <div id="buttons">
+        <br><button id="add">добавить <br>точки</button>
+        <button id="delete">удалить <br>точки</button>
+        <button id="deleteAll">очистить</button>
+      </div>
     </div>
 
     <div id="buttons">
-      <br><button id="add">добавить <br>точки</button>
-      <br><button id="delete">удалить <br>точки</button>
-      <br><button id="deleteAll">очистить</button>
       <p class="text">Количество кластеров:</p>
       <br><input type="number" size="1" id="sizeK" min="1" max="10" step="1" value="2">
       <br><button class="glow-on-hover" id="startKMeansAlgorithm">k-means</button>
       <br><button class="glow-on-hover" id="startHierarchyAlgorithm">Иерархический <br>алгоритм</button>
+      <p class="text">Выберите расстояние, <br>на котором точка будет искать своих соседей: <span id="epsValue">10</span></p>
+      <label>
+        <input id="eps" type="range" min="10" max="100" step="10" value="10" onchange="updateEps(this.value)">
+      </label>
+      <br><button class="glow-on-hover" id="startDbscanAlgorithm">DBSCAN <br>алгоритм</button>
       <br><button class="glow-on-hover" id="compareAlgorithms">Сравнить <br>алгоритмы</button>
-      <br><img src="pictures/Group 3.svg" width="150px">
+      <br><img src="pictures/Group 7.svg" width="160px">
     </div>
     <script src = "Kmeans.js"></script>
   </div>

@@ -10,12 +10,19 @@ const deletePoint = document.getElementById('delete');
 const deleteAll = document.getElementById('deleteAll');
 const startKMeansAlgorithm = document.getElementById('startKMeansAlgorithm');
 const startHierarchyAlgorithm = document.getElementById('startHierarchyAlgorithm');
+const startDBSCANAlgorithm = document.getElementById('startDbscanAlgorithm');
 const compareAlgorithms = document.getElementById('compareAlgorithms');
+let sliderEps = document.getElementById("eps");
+
 
 let radius = 15;
 let circles = [];
 let flag = 1;
+//let visited = new Set();
 
+function updateEps(value) {
+  epsValue.innerText = value;
+}
 add.addEventListener('click', function () {
   flag = 1;
 });
@@ -34,13 +41,13 @@ deleteAll.addEventListener('click', function () {
 
 canvas.addEventListener('click', function(event) {
   if (flag === 1) {
-    let x = event.clientX - canvas.offsetLeft; // получаем координату X курсора относительно левого края элемента canvas.
-    let y = event.clientY - canvas.offsetTop; //мы получаем координату Y курсора относительно верхнего края элемента canvas.
+    let x = event.offsetX;
+    let y = event.offsetY;
     drawPoint(x,y,radius);
   }
   else if (flag === 2) {
-    let x = event.clientX - canvas.offsetLeft;
-    let y = event.clientY - canvas.offsetTop;
+    let x = event.offsetX;
+    let y = event.offsetY;
     clear(x,y,radius);
   }
 });
@@ -247,9 +254,93 @@ function hierarchy(points, countOfClusters) {
     clusters.splice(row, 1);
     clusters.push(newCluster)
   }
-
   return clusters;
 }
+
+function shuffleArray(circles) { //выбираем рандомную точку
+  for (let i = circles.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [circles[i], circles[j]] = [circles[j], circles[i]];
+  }
+}
+
+function rangeQuery(points, point) { //Находим все точки, которые находятся на eps от нашей выбранной точки
+  let eps = sliderEps.value;
+  let neighbors = [];
+  for (let i = 0; i < points.length; i++) {
+    if (point === points[i]) {
+      continue;
+    }
+    let dist = distance(points[i], point);
+    if (dist <= eps) {
+      neighbors.push(points[i]);
+    }
+
+  }
+  return neighbors;
+}
+
+function expandCluster(cluster, point, neighbors, minCountOfPoints, noise, visited) { //Расширяем наши кластеры точками, которые находятся от нашей точки в радиусе eps и не является шумными
+  cluster.push(point);
+  visited.push(point);
+  for (let i = 0; i < neighbors.length; i++) {
+    if (!visited.includes(neighbors[i])) {
+      visited.push(neighbors[i]);
+      let newNeighbors = rangeQuery(neighbors[i]);
+      if (newNeighbors.length >= minCountOfPoints) {
+        neighbors.push(...newNeighbors); //объединяем два массива, сохраняя порядок елементов с помощью оператора spread
+      }
+    }
+    if (!noise.includes(neighbors[i]) && !cluster.includes(neighbors[i])) {
+      cluster.push(neighbors[i]);
+    }
+  }
+}
+
+function dbscanAlgorithm(circles, minCountOfPoints) {
+  let visited = []
+  let clusters = [];
+  let noise = [];
+  for (let i = 0; i < circles.length; i++) {
+    if (visited.includes(circles[i])) {
+      continue;
+    }
+    visited.push(circles[i]);
+    let neighbors = rangeQuery(circles, circles[i]);
+    if (neighbors.length < minCountOfPoints) {
+      noise.push(circles[i]);
+    }
+    else {
+      let cluster = [];
+      expandCluster(cluster, circles[i], neighbors, minCountOfPoints, noise, visited);
+      clusters.push(cluster);
+
+    }
+  }
+  return [clusters, noise];
+}
+
+startDBSCANAlgorithm.addEventListener('click', function () {
+  let countOfClusters = document.getElementById("sizeK").value;
+  if (circles.length === 0){
+    alert("Добавь точки");
+  }
+  else{
+    let [clusters, noise] = dbscanAlgorithm(circles, 5);
+    console.log(clusters, noise);
+    for (let i = 0; i < clusters.length; i++) {
+      let color = getRandomColor();
+      for (let j = 0; j < clusters[i].length; j++) {
+        let point = clusters[i][j];
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
+        ctx.fillStyle = color;
+        ctx.fill();
+      }
+    }
+  }
+});
+
 
 compareAlgorithms.addEventListener('click', function () {
   let countOfClusters = document.getElementById("sizeK").value;
@@ -267,7 +358,12 @@ compareAlgorithms.addEventListener('click', function () {
       for (let j = 0; j < hierarchyClusters[i].length; j++) {
         let point = hierarchyClusters[i][j];
         ctx.beginPath();
-        ctx.arc(point.x, point.y, radius, 0, Math.PI);
+        ctx.arc(point.x, point.y, radius, 0,  Math.PI * 2);
+        ctx.fillStyle = "white";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, radius, 0,  (1 / 3) * Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
       }
@@ -276,7 +372,18 @@ compareAlgorithms.addEventListener('click', function () {
       ctx.fillStyle = cluster.color;
       for (const point of cluster.points) {
         ctx.beginPath();
-        ctx.arc(point.x, point.y, radius, Math.PI, 2 * Math.PI);
+        ctx.arc(point.x, point.y, radius, (1 / 3) * Math.PI * 2, (2/ 3) * Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    let [clusters, noise] = dbscanAlgorithm(circles, 5);
+    for (let i = 0; i < clusters.length; i++) {
+      let color = getRandomColor();
+      for (let j = 0; j < clusters[i].length; j++) {
+        let point = clusters[i][j];
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, radius, (2 / 3) * Math.PI * 2, ((2 + 1) / 3) * Math.PI * 2);
+        ctx.fillStyle = color;
         ctx.fill();
       }
     }

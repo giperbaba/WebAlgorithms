@@ -11,10 +11,10 @@
 }
 
 #buttons {
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.3);
   border: none;
   color: white;
-  padding: 14px 30px;
+  padding: 14px 20px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -106,4 +106,18 @@ body {
   width: 100%;
   height: auto;
   position: fixed;
+}
+@media screen and (max-width: 970px), screen and (max-height: 500px) {
+  #canva {
+    width: 400px;
+  }
+
+  button {
+    font-size: 10px;
+  }
+
+  #klaster {
+
+    width: 60%;
+  }
 }
