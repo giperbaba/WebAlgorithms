@@ -6,16 +6,6 @@ body {
   color: black;
 }
 
-/*#drawing-board {*/
-/*  width: 50px;*/
-/*  height: 50px;*/
-/*  border: 3px solid cornflowerblue;*/
-/*  padding-right: 0;*/
-/*  margin-left: 20px;*/
-/*  top: 50px;*/
-/*  display: flex;*/
-/*}*/
-
 h1 {
   background:#7F7FD5;
   background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
@@ -52,3 +42,22 @@ button{
   letter-spacing: 1px;
   padding: 10px;
 }
+
+
+.digits-field {
+  height: 33vw;
+  width: min-content;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  //justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+.digit {
+  background-color: #d7d4d4;
+  color: #000;
+  font-size: 1.1vw;
+  margin-right: 10px;
+}
+
