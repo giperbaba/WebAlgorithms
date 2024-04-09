@@ -47,17 +47,44 @@ button{
 .digits-field {
   height: 33vw;
   width: min-content;
-  margin: 0 auto;
+/ / margin: 0 auto;
+  margin-left: 10px;
+  margin-top: 20px;
   display: flex;
-  flex-direction: row;
-  //justify-content: space-between;
+  flex-direction: column;
+/ / justify-content: space-between;
   align-items: center;
   gap: 15px;
-}
-.digit {
-  background-color: #d7d4d4;
-  color: #000;
-  font-size: 1.1vw;
-  margin-right: 10px;
-}
 
+  .digit {
+    background-color: #d7d4d4;
+    color: #000;
+    font-size: 1.1vw;
+    margin-right: 10px;
+    /*width:40px;*/
+    /*height: 50px;*/
+    /*border-radius: 100%;*/
+  }
+  >div {
+    width: 2.5vw;
+    height: 2.5vw;
+    border-radius: 2vw;
+    line-height: 2.5vw;
+    text-align: center;
+  }
+  .recognized-digit-first {
+    background-color: limegreen;
+    color: #000
+  }
+
+  .recognized-digit-second {
+    background-color: yellow;
+    color: #000
+  }
+
+  .recognized-digit-third {
+    background-color: mediumvioletred;
+    color: #000
+  }
+
+}
