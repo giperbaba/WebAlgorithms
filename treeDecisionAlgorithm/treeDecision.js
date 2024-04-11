@@ -1,8 +1,7 @@
-class Node {
+export class Node {
   constructor() {
     this.htmlElement = null;
     this.attribute = null;
-    this.depth = 0;
     this.branches = [];
     this.parent = null;
     this.name = null;
@@ -19,7 +18,7 @@ class Node {
     this.name = name;
   }
 }
-class Tree {
+export class Tree {
   constructor(root) {
     this.root = root;
     this.nodes = [root];

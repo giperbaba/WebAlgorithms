@@ -27,9 +27,9 @@
       <br><input type="number" size="1" id="sizeK" min="1" max="10" step="1" value="2">
       <br><button class="glow-on-hover" id="startKMeansAlgorithm">k-means</button>
       <br><button class="glow-on-hover" id="startHierarchyAlgorithm">Иерархический <br>алгоритм</button>
-      <p class="text">Выберите расстояние, <br>на котором точка будет искать своих соседей: <span id="epsValue">10</span></p>
+      <p class="text">Выберите расстояние, <br>на котором точка будет искать своих соседей: <span id="epsValue">30</span></p>
       <label>
-        <input id="eps" type="range" min="10" max="100" step="10" value="10" onchange="updateEps(this.value)">
+        <input id="eps" type="range" min="30" max="150" step="10" value="30" onchange="updateEps(this.value)">
       </label>
       <br><button class="glow-on-hover" id="startDbscanAlgorithm">DBSCAN <br>алгоритм</button>
       <br><button class="glow-on-hover" id="compareAlgorithms">Сравнить <br>алгоритмы</button>
