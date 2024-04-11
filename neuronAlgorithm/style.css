@@ -1,0 +1,90 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  color: black;
+}
+
+h1 {
+  background:#7F7FD5;
+  background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+  background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h2 {
+  text-align:center;
+}
+.canvas_wrapper{
+  width: min-content;
+  margin: 0 auto;
+}
+.button_wrapper{
+  gap: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.canvas_wrapper{
+  display: flex;
+  flex-direction: row;
+}
+
+button{
+  background-color: deeppink;
+  border:3px solid cornflowerblue;
+  border-radius: 10px;
+  color:white;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 10px;
+}
+
+
+.digits-field {
+  height: 33vw;
+  width: min-content;
+/ / margin: 0 auto;
+  margin-left: 10px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+/ / justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+
+  .digit {
+    background-color: #d7d4d4;
+    color: #000;
+    font-size: 1.1vw;
+    margin-right: 10px;
+    /*width:40px;*/
+    /*height: 50px;*/
+    /*border-radius: 100%;*/
+  }
+  >div {
+    width: 2.5vw;
+    height: 2.5vw;
+    border-radius: 2vw;
+    line-height: 2.5vw;
+    text-align: center;
+  }
+  .recognized-digit-first {
+    background-color: limegreen;
+    color: #000
+  }
+
+  .recognized-digit-second {
+    background-color: yellow;
+    color: #000
+  }
+
+  .recognized-digit-third {
+    background-color: mediumvioletred;
+    color: #000
+  }
+
+}
