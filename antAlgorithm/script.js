@@ -10,13 +10,13 @@ canvas.height = canvas.width;
 //---------------------drawing---------------------
 
 let vertexColor = "#4E4E50";
-let vertexRadius = 6;
+let vertexRadius = 7;
 
-let pheromonePathColor = "#99CED3";
+let pheromonePathColor = "rgba(255,155,170,0.15)";
 let pheromonePathWidth = 1;
 
-let pathColor = "#99C";
-let finishPathColor = "#4D6D9A";
+//let pathColor = "#4D6D9A";
+let finishPathColor = "#99C";
 
 let vertices = [];
 let pheromones = [];
@@ -25,14 +25,22 @@ let allWays = [];
 
 //let neighborCellColor = "#5F6366";
 //let finishPathColor = "#EDB5BF";
+//let pheromonePathColor = "#99CED3";
 
-function drawPoint(x, y, r) {
+
+function drawPoint(x, y) {
   context.beginPath();
-  context.arc(x, y, r, 0, Math.PI * 2);
+  context.arc(x, y, vertexRadius, 0, Math.PI * 2, false);
   context.fillStyle = vertexColor;
   context.fill();
-  let currentPoint = new Point(x, y, r);
 
+  let currentPoint = new Point(x, y);
+  drawPheromone(currentPoint);
+  vertices.push(currentPoint);
+  drawAllPoints();
+}
+
+function drawPheromone (currentPoint) {
   if (vertices.length >= 1) {
     for (let vert of vertices) {
       context.moveTo(currentPoint.x, currentPoint.y);
@@ -42,8 +50,6 @@ function drawPoint(x, y, r) {
       context.stroke();
     }
   }
-  vertices.push(currentPoint);
-  drawAllPoints();
 }
 
 function drawAllPoints() {
@@ -56,37 +62,47 @@ function drawAllPoints() {
 }
 
 function drawNewPath(oldWay, newWay) {
-  for (let i = 0; i < newWay.path; i++) {
-    if (oldWay.path.indexOf(newWay.path[i]) == -1) {
-      context.moveTo(newWay.path[i].x, newWay.path[i].y);
-      context.lineTo(newWay.path[i + 1].x, newWay.path[i + 1].y);
-      context.strokeStyle = pathColor;
-      context.lineWidth = pheromonePathWidth + 1;
-      context.stroke();
-    }
+  context.fillStyle = "white";
+  context.fillRect(0, 0, canvas.width, canvas.height);
 
-    if (newWay.path.indexOf(oldWay.path[i]) == -1) {
-      context.moveTo(oldWay.path[i].x, oldWay.path[i].y);
-      context.lineTo(oldWay.path[i + 1].x, oldWay.path[i + 1].y);
-      context.strokeStyle = pheromonePathColor;
-      context.lineWidth = pheromonePathWidth + 1;
-      context.stroke();
-    }
-  }
-}
-
-function drawPath(way, color) {
-  for (let i = 0; i < way.path.length - 1; i++) {
-    context.moveTo(way.path[i].x, way.path[i].y);
-    context.lineTo(way.path[i + 1].x, way.path[i + 1].y);
-    context.strokeStyle = color;
+  /*context.beginPath();
+  for (let i = 0; i < newWay.path.length - 1; i++) {
+    context.moveTo(newWay.path[i].x, newWay.path[i].y);
+    context.lineTo(newWay.path[i + 1].x, newWay.path[i + 1].y);
+    context.strokeStyle = pathColor;
     context.lineWidth = pheromonePathWidth + 1;
     context.stroke();
   }
-  context.lineTo(way.path[0].x, way.path[0].y);
+
+  // Устанавливаем цвет pheromonePathColor
+  context.strokeStyle = pheromonePathColor;
+
+  // Рисуем старый путь с цветом pheromonePathColor
+  for (let i = 0; i < oldWay.path.length - 1; i++) {
+    context.beginPath();
+    context.moveTo(oldWay.path[i].x, oldWay.path[i].y);
+    context.lineTo(oldWay.path[i + 1].x, oldWay.path[i + 1].y);
+    context.lineWidth = pheromonePathWidth + 1;
+    context.stroke();
+  }*/
+}
+
+async function drawPath(way, color, index = 1) {
+  context.lineWidth = pheromonePathWidth;
   context.strokeStyle = color;
-  context.lineWidth = pheromonePathWidth + 1;
-  context.stroke();
+
+  if (index < way.path.length) {
+    context.beginPath();
+    context.moveTo(way.path[index - 1].x, way.path[index - 1].y);
+    context.lineTo(way.path[index].x, way.path[index].y);
+    context.stroke();
+
+    await wait(200);
+    drawPath(way, color, index + 1);
+  } else {
+    context.lineTo(way.path[0].x, way.path[0].y);
+    context.stroke();
+  }
 }
 
 function refresh() {
@@ -98,28 +114,29 @@ function refresh() {
   pheromones = [];
   distances = [];
   allWays = [];
-  QValue = document.getElementById('QValue').value;
-  alfaValue = document.getElementById('alfaValue').value;
-  betaValue = document.getElementById('betaValue').value;
+
+  alfaValue = parseInt(document.getElementById('𝛼').value);
+  betaValue = parseInt(document.getElementById('𝛽').value);
 }
 
 //---------------------antAlgorithm---------------------
 
-let countOfIterations = 1000;
+let countOfIterations = 10000;
 let countOfAnts = vertices.length;
 
 const evaporation = 0.3; //коэфициэнт испарения
 const initialPheromones = 0.2; //начальное количество феромона на ребрах
 
-let QValue = parseFloat(document.getElementById('QValue').value);
-let alfaValue = parseInt(document.getElementById('alfaValue').value);
-let betaValue = parseInt(document.getElementById('betaValue').value);
+let QValue = 200;
+let alfaValue = parseInt(document.getElementById('𝛼').value);
+let betaValue = parseInt(document.getElementById('𝛽').value);
+
+let flagFinishAlgorithm = false;
 
 class Point {
-  constructor(x, y, r) {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.r = r;
   }
 
   distanceTo(otherPoint) {
@@ -143,10 +160,10 @@ class Way {
   }
 
   getDistance() {
-    for (let i = 0; i < this.length - 1; i++) {
-      this.distance += this.path[i].distanceTo(this.path[i + 1]);
+    for (let i = 0; i < this.pathIndexes.length - 1; i++) {
+      this.distance += vertices[this.pathIndexes[i]].distanceTo(vertices[this.pathIndexes[i + 1]]);
     }
-    this.distance += this.path[this.length - 1].distanceTo(this.path[0]);
+    this.distance += vertices[this.pathIndexes[this.pathIndexes.length - 1]].distanceTo(vertices[this.pathIndexes[0]]);
   }
 }
 
@@ -181,8 +198,27 @@ function antAlgorithm() {
     }
   }
 
+  countOfAnts = vertices.length;
+
   //-----main-----
+  let end = vertices.length * 2;
+
   for (let iteration = 0; iteration < countOfIterations; iteration++) {
+
+    if (end === 0) {
+      let min = bestWay.distance;
+      for (let i = 0; i < allWays.length; i++) {
+        if (allWays[i].distance <= min) {
+          min = allWays[i].distance;
+        }
+      }
+      console.log(min);
+      console.log(flag);
+      console.log(bestWay);
+      flagFinishAlgorithm = true;
+      drawPath(bestWay, finishPathColor);
+      return;
+    }
 
     for (let ant = 0; ant < countOfAnts; ant++) {
 
@@ -206,24 +242,20 @@ function antAlgorithm() {
           }
         }
 
-        for (let i = 0; i < allWishes.length; i++) {
-          allWishes[i][1] = allWishes[i][1] / commonWish;
-        }
+        allWishes.sort((a, b) => b - a);
 
-        for (let j = 1; j < allWishes.length; j++) {
-          allWishes[j][1] += allWishes[j - 1][1];
-        }
-
-        let rand = Math.random();
+        let rand = Math.random() * commonWish;
         let nextVertexIndex;
         for (let i = 0; i < allWishes.length; i++) {
-          if (rand < allWishes[i][1]) {
+          rand -= allWishes[i][1];
+          if (rand <= 0) {
             nextVertexIndex = allWishes[i][0];
             break;
           }
         }
 
         let nextVertex = vertices[nextVertexIndex];
+
         currentWay.add(nextVertex, nextVertexIndex);
         currentWay.getDistance();
       }
@@ -243,11 +275,11 @@ function antAlgorithm() {
 
     for (let i = 0; i < allWays.length; i++) {
       let pathWithIndexes = allWays[i].pathIndexes;
-      let lengthOfPath = allWays[i].distance;
+      let distance = allWays[i].distance;
       for (let j = 0; j < vertices.length - 1; j++) {
         let min = Math.min(pathWithIndexes[j], pathWithIndexes[j + 1]);
         let max = Math.max(pathWithIndexes[j], pathWithIndexes[j + 1]);
-        pheromones[min][max] += QValue / lengthOfPath;
+        pheromones[min][max] += QValue / distance;
       }
     }
 
@@ -258,19 +290,20 @@ function antAlgorithm() {
     newBestWay.getDistance();
 
     if (newBestWay.distance < bestWay.distance) {
-      drawNewPath(bestWay, newBestWay);
-      Object.assign(bestWay, newBestWay);
-      drawAllPoints();
+      //drawNewPath(bestWay, newBestWay);
+      bestWay.path = newBestWay.path;
+      bestWay.pathIndexes = newBestWay.pathIndexes;
+      bestWay.distance = newBestWay.distance;
+      end = vertices.length * 2;
     }
+    end--;
   }
-  drawPath(bestWay, finishPathColor);
 }
 
 //---------------------buttons---------------------
 let add = document.getElementById('add');
 let begin = document.getElementById('begin');
 
-document.getElementById('begin').onclick = antAlgorithm;
 
 document.addEventListener('DOMContentLoaded', function () {
   refresh();
@@ -292,10 +325,6 @@ canvas.addEventListener('click', function (event) {
     drawPoint(x, y, vertexRadius);
   }
 });
-
-function updateValueQ(value) {
-  QValue.innerText = value;
-}
 
 function updateValueAlfa(value) {
   alfaValue.innerText = value;
