@@ -1,3 +1,17 @@
-#canvas {
+button{
+  background-color: deeppink;
+  border:3px solid cornflowerblue;
+  border-radius: 10px;
+  color:white;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 10px;
+  margin-top: 10px;
+}
+#canvas{
   border: 5px solid mediumvioletred;
+  width: min-content;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
 }

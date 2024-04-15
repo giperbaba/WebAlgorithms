@@ -1,131 +1,203 @@
- class City {
-  constructor(x, y, r) {
+class Tour {
+  constructor(tour, fitness) {
+    this.tour = tour;
+    this.fitness = fitness;
+  }
+}
+
+class City {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.r = r;
   }
-  distanceTo(city) {
-    const dx = this.x - city.x;
-    const dy = this.y - city.y;
-    return Math.sqrt(dx * dx + dy * dy);
-  }
-};
-class Tour {
-  constructor(cities) {
-    this.cities = cities;
-    this.distance = 0;
-  }
+}
 
-  getDistance() {<!-- -->
-    if (this.distance == 0) {<!-- -->
-      for (let i = 0; i <this.cities.length - 1; i++) {<!-- -->
-        this.distance += this.cities[i].distanceTo(this.cities[i + 1]);
-      }
-      this.distance += this.cities[this.cities.length - 1].distanceTo(this.cities[0]);
+const mutationRate = 0.5;
+const maximumGenerations = 10000;
+const generationsUnchanged = 450;
+
+
+let population = [];
+let adjacencyMatrix = [];
+
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function getDistance(firstVertex, secondVertex) {
+  return Math.sqrt(Math.pow(firstVertex.x - secondVertex.x, 2) + Math.pow(firstVertex.y - secondVertex.y, 2));
+}
+
+function getRouteLength(tour) { //длина маршрута через матрицу смежности
+  let sm = 0;
+  for (let i = 0; i < tour.length - 1; i++) {
+    sm += adjacencyMatrix[tour[i]][tour[i + 1]];
+  }
+  sm += adjacencyMatrix[tour[tour.length - 1]][tour[0]];
+  return sm;
+}
+
+function shuffle(array) {
+  let firstIndex, secondIndex, temporary;
+  for (let i = 0; i < array.length; i++) {
+    firstIndex = getRandomNumber(0, array.length - 1);
+    secondIndex = getRandomNumber(0, array.length - 1);
+    temporary = array[firstIndex];
+    array[firstIndex] = array[secondIndex];
+    array[secondIndex] = temporary;
+  }
+  return array;
+}
+
+function adjMatrixGeneration(size) {
+  for (let i = 0; i < size; i++) {
+    adjacencyMatrix.push(new Array(size));
+  }
+  for (let i = 0; i < size; i++) {
+    for (let j = i + 1; j < size; j++) {
+      let distance = getDistance(cities[i], cities[j]);
+      adjacencyMatrix[i][j] = distance;
+      adjacencyMatrix[j][i] = distance;
     }
-    return this.distance;
   }
 }
-function selectParent(population) {<!-- -->
-  const fitnessSum = population.reduce((sum, tour) => sum + tour.getDistance(), 0);
-  const rouletteWheelPosition = Math.random() * fitnessSum;
 
-  let spinWheel = 0;
-  for (let i = 0; i < population.length; i++) {<!-- -->
-    spinWheel += population[i].getDistance();
-    if (spinWheel >= rouletteWheelPosition) {<!-- -->
-      return population[i];
+function generatePopulation(size) {
+  const vertex = [];
+  for (let i = 0; i < cities.length; i++) {
+    vertex.push(i);
+  }
+  for (let i = 0; i < size; i++) {
+    let temp = shuffle(vertex.slice());
+    population.push(new Tour(temp, getRouteLength(temp)));
+
+  }
+}
+
+function mutation(child) {
+  let i = getRandomNumber(0, cities.length - 1);
+  let j = getRandomNumber(0, cities.length - 1);
+  while (i < j) {
+    const temp = child[i];
+    child[i] = child[j];
+    child[j] = temp;
+    i++;
+    j--;
+  }
+}
+
+function crossover(firstParent, secondParent) {
+  let border = getRandomNumber(1, cities.length - 2);
+  const firstChild = firstParent.slice(0, border);
+  const secondChild = secondParent.slice(0, border);
+
+  for (let i = border; i < firstParent.length; i++) {
+    if (!firstChild.includes(secondParent[i])) {
+      firstChild.push(secondParent[i]);
+    }
+    if (!secondChild.includes(firstParent[i])) {
+      secondChild.push(firstParent[i]);
     }
   }
-  return population[population.length - 1];
-}
-function crossover(parent1, parent2) {<!-- -->
-  const startPosition = Math.floor(Math.random() * parent1.cities.length);
-  const endPosition = Math.floor(Math.random() * parent1.cities.length);
-
-  const childCities = parent1.cities.slice(startPosition, endPosition);
-
-  for (let i = 0; i < parent2.cities.length; i++) {<!-- -->
-    if (!childCities.includes(parent2.cities[i])) {<!-- -->
-      childCities.push(parent2.cities[i]);
+  for (let i = border; i < firstParent.length; i++) {
+    if (!firstChild.includes(firstParent[i])) {
+      firstChild.push(firstParent[i]);
+    }
+    if (!secondChild.includes(secondParent[i])) {
+      secondChild.push(secondParent[i]);
     }
   }
 
-  return new Tour(childCities);
-}
-function mutate(tour) {
-  const mutatePos1 = Math.floor(Math.random() * tour.cities.length);
-  const mutatePos2 = Math.floor(Math.random() * tour.cities.length);
-
-  const city1 = tour.cities[mutatePos1];
-  const city2 = tour.cities[mutatePos2];
-
-  tour.cities[mutatePos1] = city2;
-  tour.cities[mutatePos2] = city1;
-}
-const POPULATION_SIZE = 300;
-const MUTATION_RATE = 0.25;
-const GENERATIONS = 500;
-
-function geneticAlgorithm(cities) {
-  let population = [];
-  for (let i = 0; i < POPULATION_SIZE; i++) {
-    const tour = new Tour(cities);
-    population.push(tour);
+  if (Math.random() >= mutationRate) {
+    mutation(firstChild);
+  }
+  if (Math.random() >= mutationRate) {
+    mutation(secondChild);
   }
 
-  for (let generation = 0; generation < GENERATIONS; generation++) {
-    let newPopulation = [];
+  population.push(new Tour(firstChild, getRouteLength(firstChild)));
+  population.push(new Tour(secondChild, getRouteLength(secondChild)));
+}
 
-    for (let i = 0; i < POPULATION_SIZE; i++) {
-      const parent1 = selectParent(population);
-      const parent2 = selectParent(population);
-      let child = crossover(parent1, parent2);
+function getNewGeneration(populationSize) {
+  let i = 0;
 
-      if (Math.random() < MUTATION_RATE) {
-        mutate(child);
-      }
+  while (i < populationSize) {
+    let firstParent = getRandomNumber(0, populationSize - 1);
+    let secondParent = getRandomNumber(0, populationSize - 1);// выбираем 2 рандомных родителя
+    crossover(population[firstParent].tour, population[secondParent].tour);
+    i += 2;//кроссовер добавляет 2 потомка к размеру популяции
+  }
 
-      newPopulation.push(child);
+  population.sort((a, b) => a.fitness - b.fitness);//сортируем массив по приспособленности (в начале более приспособленные)
+  population.splice(Math.ceil(population.length / 2));//удаляем половину с меньшей приспособленностью, чтобы размер популяции оставался таким же
+}
+
+function startAlgorithm(sizeOfChromosome) {
+
+  const populationSize = sizeOfChromosome * sizeOfChromosome;
+  adjacencyMatrix = [];
+  population = [];
+
+  adjMatrixGeneration(sizeOfChromosome);
+  generatePopulation(populationSize);
+
+  let total = 0;
+  let withoutChanges = 0;
+
+  const currentMaxChromosome = population.reduce((max, current) => {
+    return (current.fitness > max.fitness) ? current : max;
+  });
+
+  drawPointsFromArray(cities)
+  drawTour(currentMaxChromosome.tour, 'deepskyblue');
+
+  let previous = currentMaxChromosome.fitness
+
+  const intervalId = setInterval(() => {
+
+    if (total === maximumGenerations || withoutChanges === generationsUnchanged || withoutChanges === populationSize) {
+      clearInterval(intervalId);
+      drawTour(population[0].tour, 'deepskyblue');
+      return;
     }
 
-    population = newPopulation;
-    const bestTour = getBestTour(population);
+    getNewGeneration(populationSize);
 
-    drawTour(bestTour);
-  }
+    if (previous !== population[0].fitness) {
+      previous = population[0].fitness;
+      drawPointsFromArray(cities)
+      drawTour(population[0].tour, 'deepskyblue');
 
-  const bestTour = getBestTour(population);
-  drawTour(bestTour);
+      withoutChanges = 0
+    }
+
+    withoutChanges++;
+    total++;
+  }, 0);
 }
-
-function getBestTour(population) {
-  return population.sort((a, b) => a.getDistance() - b.getDistance())[0];
-}
-
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-canvas.width = 400;
+canvas.width = 600;
 canvas.height = 400;
 
 let radius = 10;
 let cities = [];
 let flag = 1;
 
- clearAll.addEventListener("click", function() {
-   clearAllFunction();
- });
-
- function clearAllFunction() {
-   flag = 0;
-   cities = [];
-   ctx.beginPath();
-   ctx.clearRect(0, 0, canvas.width, canvas.height);
-   ctx.fillStyle = "white";
-   ctx.fillRect(0, 0, canvas.width, canvas.height);
- }
+function clearAllFunction() {
+  flag = 0;
+  cities = [];
+  ctx.beginPath();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+clearAll.addEventListener("click", function() {
+  clearAllFunction();
+});
 
 add.addEventListener('click', function () {
   flag = 1;
@@ -152,26 +224,25 @@ ctx.rect(0, 0, canvas.width, canvas.height);
 ctx.fillStyle = "white";
 ctx.fill();
 
- const getPath = document.getElementById('getPath'); // Замените 'buildPathButton' на id вашей кнопки
+const getPath = document.getElementById('getPath'); // Замените 'buildPathButton' на id вашей кнопки
 
- getPath.addEventListener('click', function() {
-   // Вызываем функцию geneticAlgorithm(cities) при нажатии на кнопку
-   geneticAlgorithm(cities);
- });
+getPath.addEventListener('click', function() {
+  startAlgorithm(cities.length);
+});
 
 
-function drawPoint(x, y, r) {
+function drawPoint(x, y) {
   ctx.beginPath();
-  ctx.arc(x, y,  r, 0,Math.PI * 2);
-  ctx.fillStyle = 'black';
+  ctx.arc(x, y, radius, 0,Math.PI * 2);
+  ctx.fillStyle = 'pink';
   ctx.fill();
-  let city = new City(x, y, r); //point - координаты, поставленной точки
+  let city = new City(x, y); //point - координаты, поставленной точки
   cities.push(city); //обновляем массив с точками после каждой новой нарисованной точки
 }
-function clear(x, y, r){
+function clear(x, y){
   for (let i = 0; i < cities.length; i++) { //проходимся по нарисованным точкам
     let dist = Math.sqrt((x - cities[i].x) ** 2 + (y - cities[i].y) ** 2); // вычисляем расстояние между точками
-    if (dist <= cities[i].r) { //если расстояние меньше, чем радиус, то есть мышка заходит на окружность
+    if (dist <= radius) { //если расстояние меньше, чем радиус, то есть мышка заходит на окружность
       ctx.beginPath();
       ctx.rect(0, 0, canvas.width, canvas.height); //очищаем канву от ненужной точки в белый
       ctx.fillStyle = 'white';
@@ -179,7 +250,7 @@ function clear(x, y, r){
       cities.splice(i, 1); //начиная с индекса i удаляем один элемент
       for (let j = 0; j < cities.length; j++) { //проходимся по оставшимся точкам, для того чтобы не удалять нужные точки
         ctx.beginPath();
-        ctx.arc(cities[j].x, cities[j].y, cities[j].r, 0, 2 * Math.PI);
+        ctx.arc(cities[j].x, cities[j].y, radius, 0, 2 * Math.PI);
         ctx.fillStyle = 'black'; //красим неудаленные точки в черный
         ctx.fill();
       }
@@ -188,23 +259,26 @@ function clear(x, y, r){
   }
 }
 
-
-
-function drawTour(tour) {<!-- -->
+function drawTour(route, color) {
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(cities[route[0]].x, cities[route[0]].y);
+  for (let i = 1; i < route.length; i++) {
+    ctx.lineTo(cities[route[i]].x, cities[route[i]].y);
+  }
+  ctx.lineTo(cities[route[0]].x, cities[route[0]].y);
+  ctx.stroke();
+}
+function drawPointsFromArray(pointsArray) {
+  // Очищаем канвас
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.strokeStyle = 'blue';
-  ctx.lineWidth = 2;
-
-  for (let i = 0; i < tour.cities.length - 1; i++) {<!-- -->
+  // Рисуем точки из массива
+  pointsArray.forEach(point => {
     ctx.beginPath();
-    ctx.moveTo(tour.cities[i].x, tour.cities[i].y);
-    ctx.lineTo(tour.cities[i + 1].x, tour.cities[i + 1].y);
-    ctx.stroke();
-  }
-
-  ctx.beginPath();
-  ctx.moveTo(tour.cities[tour.cities.length - 1].x, tour.cities[tour.cities.length - 1].y);
-  ctx.lineTo(tour.cities[0].x, tour.cities[0].y);
-  ctx.stroke();
+    ctx.arc(point.x, point.y, radius, 0,Math.PI * 2);
+    ctx.fillStyle = 'pink';
+    ctx.fill();
+  });
 }
