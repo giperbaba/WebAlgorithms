@@ -1,7 +1,7 @@
 const canvas = document.querySelector('canvas');
 const clear = document.getElementById('clear');
 const ctx = canvas.getContext('2d');
-
+window.csvContent = "data:text/csv;charset=utf-8,";
 canvas.width = 400;
 canvas.height = 400;
 
@@ -122,6 +122,15 @@ recognizeButton.addEventListener('click', () => {
   elDigits[sortedIndexes[2]].classList.add('recognized-digit-third');
 
   console.log(sortedIndexes);
+  window.csvContent+=name+","+imageMatrix+"\n";
 });
+const func1 = () => {
+  window.name = document.getElementById("name").value;
+}
+const saveButton = document.getElementById('save');
 
-
+saveButton.addEventListener('click', () =>{const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+  link.href = encodedUri;
+  link.download = 'testHandWriterNumbers.csv';
+  link.click();})
