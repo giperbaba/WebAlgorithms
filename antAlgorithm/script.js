@@ -12,21 +12,15 @@ canvas.height = canvas.width;
 let vertexColor = "#4E4E50";
 let vertexRadius = 7;
 
-let pheromonePathColor = "rgba(255,155,170,0.15)";
+let pheromonePathColor = "rgba(255,155,170,0.1)";
 let pheromonePathWidth = 1;
 
-//let pathColor = "#4D6D9A";
+let searchPathColor = "red";
+
 let finishPathColor = "#99C";
+let finishPathWidth = 2;
 
 let vertices = [];
-let pheromones = [];
-let distances = [];
-let allWays = [];
-
-//let neighborCellColor = "#5F6366";
-//let finishPathColor = "#EDB5BF";
-//let pheromonePathColor = "#99CED3";
-
 
 function drawPoint(x, y) {
   context.beginPath();
@@ -87,8 +81,12 @@ function drawNewPath(oldWay, newWay) {
   }*/
 }
 
+function wait(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
 async function drawPath(way, color, index = 1) {
-  context.lineWidth = pheromonePathWidth;
+  context.lineWidth = finishPathWidth;
   context.strokeStyle = color;
 
   if (index < way.path.length) {
@@ -98,8 +96,28 @@ async function drawPath(way, color, index = 1) {
     context.stroke();
 
     await wait(200);
-    drawPath(way, color, index + 1);
-  } else {
+    return drawPath(way, color, index + 1);
+  }
+  else {
+    context.lineTo(way.path[0].x, way.path[0].y);
+    context.stroke();
+    return Promise.resolve();
+  }
+}
+
+function clearPath(way, index = 1) {
+  context.lineWidth = pheromonePathWidth;
+  context.strokeStyle = pheromonePathColor;
+
+  if (index < way.path.length) {
+    context.beginPath();
+    context.moveTo(way.path[index - 1].x, way.path[index - 1].y);
+    context.lineTo(way.path[index].x, way.path[index].y);
+    context.stroke();
+
+    clearPath(way, index + 1);
+  }
+  else {
     context.lineTo(way.path[0].x, way.path[0].y);
     context.stroke();
   }
@@ -115,6 +133,8 @@ function refresh() {
   distances = [];
   allWays = [];
 
+  flagFinishAlgorithm = false;
+
   alfaValue = parseInt(document.getElementById('𝛼').value);
   betaValue = parseInt(document.getElementById('𝛽').value);
 }
@@ -124,7 +144,7 @@ function refresh() {
 let countOfIterations = 10000;
 let countOfAnts = vertices.length;
 
-const evaporation = 0.3; //коэфициэнт испарения
+const evaporation = 0.64; //коэфициент испарения
 const initialPheromones = 0.2; //начальное количество феромона на ребрах
 
 let QValue = 200;
@@ -132,6 +152,10 @@ let alfaValue = parseInt(document.getElementById('𝛼').value);
 let betaValue = parseInt(document.getElementById('𝛽').value);
 
 let flagFinishAlgorithm = false;
+
+let pheromones = [];
+let distances = [];
+let allWays = [];
 
 class Point {
   constructor(x, y) {
@@ -167,28 +191,22 @@ class Way {
   }
 }
 
-function getRandomValue(array) {
-  return array[Math.floor(Math.random() * array.length)];
-}
-
 function getWish(from, to) {
   return Math.pow(pheromones[from][to], alfaValue) * Math.pow(distances[from][to], betaValue);
 }
 
-function wait(time) {
-  return new Promise(resolve => setTimeout(resolve, time));
-}
+let bestWay;
 
 function antAlgorithm() {
   //-----add first way-----
-  let bestWay = new Way(vertices.length);
+  bestWay = new Way(vertices.length);
 
   for (let i = 0; i < vertices.length; i++) {
     bestWay.add(vertices[i], i);
     pheromones[i] = new Array(vertices.length);
     distances[i] = new Array(vertices.length);
   }
-
+  console.log(bestWay);
   bestWay.getDistance();
 
   for (let i = 0; i < vertices.length - 1; i++) {
@@ -201,19 +219,11 @@ function antAlgorithm() {
   countOfAnts = vertices.length;
 
   //-----main-----
-  let end = vertices.length * 2;
+  let end = vertices.length * 3;
 
   for (let iteration = 0; iteration < countOfIterations; iteration++) {
 
     if (end === 0) {
-      let min = bestWay.distance;
-      for (let i = 0; i < allWays.length; i++) {
-        if (allWays[i].distance <= min) {
-          min = allWays[i].distance;
-        }
-      }
-      console.log(min);
-      console.log(flag);
       console.log(bestWay);
       flagFinishAlgorithm = true;
       drawPath(bestWay, finishPathColor);
@@ -229,32 +239,38 @@ function antAlgorithm() {
 
       while (currentWay.path.length !== vertices.length) {
         let allWishes = []; //[index, wish]
-        let wish = 0;
         let commonWish = 0;
 
         for (let i = 0; i < vertices.length; i++) {
-          if (currentWay.pathIndexes.indexOf(i) === -1) {
-            let min = Math.min(startVertexIndex, i);
-            let max = Math.max(startVertexIndex, i);
-            wish = getWish(min, max);
-            allWishes.push([i, wish]);
-            commonWish += wish;
+          if (currentWay.pathIndexes.indexOf(i) !== -1) {
+            continue;
           }
+          let min = Math.min(startVertexIndex, i);
+          let max = Math.max(startVertexIndex, i);
+          let wish = getWish(min, max);
+          allWishes.push([i, wish]);
+          commonWish += wish;
         }
 
-        allWishes.sort((a, b) => b - a);
+        for (let i = 0; i < allWishes.length; i++) {
+          allWishes[i][1] /= commonWish;
+        }
 
-        let rand = Math.random() * commonWish;
+        for (let i = 1; i < allWishes.length; i++) {
+          allWishes[i][1] += allWishes[i - 1][1];
+        }
+
+        let rand = Math.random();
         let nextVertexIndex;
         for (let i = 0; i < allWishes.length; i++) {
-          rand -= allWishes[i][1];
-          if (rand <= 0) {
+          if (rand < allWishes[i][1]) {
             nextVertexIndex = allWishes[i][0];
             break;
           }
         }
+        startVertexIndex =  nextVertexIndex;
 
-        let nextVertex = vertices[nextVertexIndex];
+        let nextVertex = vertices[startVertexIndex];
 
         currentWay.add(nextVertex, nextVertexIndex);
         currentWay.getDistance();
@@ -263,7 +279,7 @@ function antAlgorithm() {
     }
 
     allWays.sort(function (a, b) {
-      return a.distance - b.distance
+      return a.distance - b.distance;
     });
 
     //-----update pheromones-----
@@ -285,33 +301,26 @@ function antAlgorithm() {
 
     let newBestWay = new Way(vertices.length);
 
+
     newBestWay.path = allWays[0].path;
     newBestWay.pathIndexes = allWays[0].pathIndexes;
     newBestWay.getDistance();
 
     if (newBestWay.distance < bestWay.distance) {
-      //drawNewPath(bestWay, newBestWay);
       bestWay.path = newBestWay.path;
       bestWay.pathIndexes = newBestWay.pathIndexes;
       bestWay.distance = newBestWay.distance;
-      end = vertices.length * 2;
+      end = vertices.length * 3;
     }
     end--;
   }
 }
 
 //---------------------buttons---------------------
-let add = document.getElementById('add');
 let begin = document.getElementById('begin');
-
 
 document.addEventListener('DOMContentLoaded', function () {
   refresh();
-});
-
-let flag = true;
-add.addEventListener('click', function () {
-  flag = true;
 });
 
 begin.addEventListener('click', function () {
@@ -319,10 +328,18 @@ begin.addEventListener('click', function () {
 });
 
 canvas.addEventListener('click', function (event) {
-  if (flag) {
-    let x = event.offsetX;
-    let y = event.offsetY;
-    drawPoint(x, y, vertexRadius);
+  let x = event.offsetX;
+  let y = event.offsetY;
+  drawPoint(x, y, vertexRadius);
+  if (flagFinishAlgorithm) {
+    clearPath(bestWay);
+    let tempVertices = vertices;
+    refresh();
+    vertices = tempVertices;
+    for (let i = 0; i < vertices.length; i++) {
+      drawPheromone(vertices[i]);
+      drawAllPoints();
+    }
   }
 });
 
