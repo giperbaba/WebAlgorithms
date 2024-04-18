@@ -5,23 +5,25 @@
 }
 
 #canvas {
-  width: 550px;
+  background-color: transparent;
+  border: 1.5px solid rgba(33, 31, 37, 0.4);
 }
 
 .buttons{
   display: inline-block;
   padding: 12px 28px;
   font-size: 25px;
-  background-color: rgba(79, 63, 101, 0.6)
+  background-color: rgba(33, 31, 37, 0.4);
 }
 
 .text {
+  font-style: italic;
   font-size: 14px;
   color: aliceblue;
 }
 
 #main{
-  background: url("img/geekbrains.by-kak-sdelat-fon-html.svg");
+  background: url("img/im.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -33,4 +35,17 @@
   position: fixed;
 }
 
+
+
+#𝛼::-webkit-slider-thumb {
+  background-color: red; /* Для веб-кит браузеров */
+}
+
+#𝛼::-moz-range-thumb {
+  background-color: red; /* Для Firefox */
+}
+
+#𝛼::-ms-thumb {
+  background-color: red; /* Для Internet Explorer и Edge */
+}
 
