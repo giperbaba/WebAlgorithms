@@ -21,14 +21,14 @@ body{
   display: block;
   padding: 0;
   width: 600px;
-  text-align: center; /* Центрируем содержимое */
+  text-align: center;
 }
 
 .cont img {
-  max-width: 100%; /* Максимальная ширина изображения равна ширине блока .cont */
-  max-height: 200px; /* Максимальная высота изображения */
-  width: auto; /* Автоматический подбор ширины */
-  height: auto; /* Автоматический подбор высоты */
+  max-width: 100%;
+  max-height: 200px;
+  width: auto;
+  height: auto;
 }
 /*--------cards--------*/
 
@@ -42,42 +42,65 @@ body{
 }
 
 #slider-container #slider .slide:nth-child(1) {
-  background-color: rgba(244,56,150,0.8);
-  border: 2px solid rgb(32,19,52);
-
+  background-color: rgba(244, 56, 150, 0.8);
+  border: 2px solid rgb(32, 19, 52);
+  background-image: url('image/data-accesskafka-cluster-svgrepo-com.svg');
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 #slider-container #slider .slide:nth-child(2) {
   background-color: rgba(240,101,78,0.8);
   border: 2px solid rgb(32,19,52);
+  background-image: url('image/star-shine-svgrepo-com.svg');
+  background-size: 65%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 #slider-container #slider .slide:nth-child(3) {
   background-color: rgba(249,216,61,0.8);
   border: 2px solid rgb(32,19,52);
+  background-image: url('image/dna-svgrepo-com.svg');
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 #slider-container #slider .slide:nth-child(4) {
   background-color: rgba(106,246,168,0.8);
   border: 2px solid rgb(32,19,52);
+  background-image: url('image/ant-svgrepo-com.svg');
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 #slider-container #slider .slide:nth-child(5) {
   background-color: rgba(16,133,245,0.8);
   border: 2px solid rgb(32,19,52);
+  background-image: url('image/tree-decidious-svgrepo-com.svg');
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 #slider-container #slider .slide:nth-child(6) {
   background-color: rgba(4,55,249,0.8);
   border: 2px solid rgb(32,19,52);
+  background-image: url('image/machine-learning-model-svgrepo-com.svg');
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 #slider .slide span a {
-  opacity: 0; /* Скрываем текст */
+  opacity: 0;
   display: block;
   width: 100%;
   height: 100%;
-  pointer-events: auto; /* Позволяет кнопкам быть кликабельными */
+  pointer-events: auto;
 }
 
 /*--------buttons left right--------*/

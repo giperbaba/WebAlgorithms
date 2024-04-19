@@ -15,6 +15,7 @@ body {
   margin-left: 450px;
   width: 50%;
 }
+
 #canvas {
   width: 500px;
   border: 2px solid hotpink;
@@ -33,6 +34,7 @@ body {
   margin: 10px;
   font-family: Snell Roundhand, cursive;
 }
+
 #algorithmButtonsContainer {
   font-family: Snell Roundhand, cursive;
   border: none;
@@ -41,6 +43,7 @@ body {
   display: inline-block;
   font-size: 15px;
 }
+
 #buttonsContainer {
   border: none;
   color: white;
@@ -50,7 +53,6 @@ body {
   display: flex;
   font-size: 10px;
 }
-
 
 .glow-on-hover {
   width: 150px;
@@ -114,7 +116,6 @@ body {
   50% { background-position: 400% 0; }
   100% { background-position: 0 0; }
 }
-
 
 .bg-ex-fixed{
   background: url("pictures/webAlgorithms.svg");
