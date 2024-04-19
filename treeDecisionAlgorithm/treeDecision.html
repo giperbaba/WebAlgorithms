@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +7,48 @@
   <link rel="stylesheet" href="treeDecision.css">
 </head>
 <body>
+<div id="container">
+  <span class="btn"><a href="../antAlgorithm/index.html"></a></span>
+<h1>Дерево решений</h1>
+<section class="sectionSetting">
+  <div class="window">
+    <div class="treeContainer" id="treeDiv">
+      <div class="tree">
+        <ul id="treeStart"> </ul>
+      </div>
+    </div>
+  </div>
+  <div class="rightContainer">
+    <div class="mainContainer">
+      <div class="csvContainer">
+        <div class="chooseFileContainer">
+          <input type="file" id="fileInput" accept=".csv" class="inputFile" onclick="this.value = null">
+          <label class="fileWrapper"  for="fileInput">
+            <div class="chooseFileButton" id="chooseFileButton">Выберите файл</div>
+          </label>
+          <div class="unchosenFileButton" id="fileName">Файл не выбран</div>
+        </div>
+        <textarea class="textAreaClass" id="inputDataset" placeholder="Введите датасет" ></textarea>
+      </div>
+      <div class="buttonsContainer">
+        <button class="buttons" id="buildTree">Построить дерево</button>
+        <button class="buttons " id="clearAll" >Очистить поле</button>
+        <button id="showResult" class="buttons">Принять решение</button>
+      </div>
+    </div>
+    <div class="resultText">
+      <p>Решение: </p>
+    </div>
+    <div class="resultViewer">
+      <p id="result" style="text-align: center"></p>
+    </div>
+  </div>
+
+</section>
+  <span class="btn"><a href="../neuronAlgorithm/draw.html"></a></span>
+</div>
 <script type="module" src="buildTree.js"></script>
-<script src="parseCSV.js"></script>
+<script type="module" src="parseCSV.js"></script>
 <script type="module" src="treeDecision.js"></script>
 </body>
 </html>

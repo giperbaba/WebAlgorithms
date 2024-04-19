@@ -12,6 +12,7 @@ export function parseCSV(stringCSV) {
     let currentString = tempArray[1]; //берем одну строку без запятых
     stringArray[stringArray.length] = currentString; //в массив кладем каждое значение
     if ((!flag) && (tempArray[4] === '\n')) { //если строка закончилоась
+      console.log(tempArray[0], tempArray[1], tempArray[2], tempArray[3], tempArray[4])
       flag = true;
       size++;
     }

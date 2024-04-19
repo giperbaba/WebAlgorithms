@@ -24,6 +24,7 @@ function inputFileEvent() {
       document.getElementById("fileName").textContent = this.files.item(0).name;
       isFileChosen = true;
       textInput(true);
+
     }
   }
 }
