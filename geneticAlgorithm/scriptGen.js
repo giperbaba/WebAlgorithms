@@ -14,8 +14,6 @@ class City {
 
 const mutationRate = 0.5;
 const maximumGenerations = 10000;
-const generationsUnchanged = 450;
-
 
 let population = [];
 let adjacencyMatrix = [];
@@ -133,30 +131,30 @@ function getNewGeneration(populationSize) {
   population.splice(Math.ceil(population.length / 2));//удаляем половину с меньшей приспособленностью, чтобы размер популяции оставался таким же
 }
 
-function startAlgorithm(sizeOfChromosome) {
+function startAlgorithm(sizeOfTour) {
 
-  const populationSize = sizeOfChromosome * sizeOfChromosome;
+  const populationSize = sizeOfTour * sizeOfTour;
   adjacencyMatrix = [];
   population = [];
 
-  adjMatrixGeneration(sizeOfChromosome);
+  adjMatrixGeneration(sizeOfTour);
   generatePopulation(populationSize);
 
-  let total = 0;
-  let withoutChanges = 0;
+  let countOfGenerations = 0;
+  let generationsWithoutChanges = 0;
 
-  const currentMaxChromosome = population.reduce((max, current) => {
+  const currentMaxTour = population.reduce((max, current) => {
     return (current.fitness > max.fitness) ? current : max;
   });
 
   drawPointsFromArray(cities)
-  drawTour(currentMaxChromosome.tour, 'deepskyblue');
+  drawTour(currentMaxTour.tour, 'deepskyblue');
 
-  let previous = currentMaxChromosome.fitness
+  let previous = currentMaxTour.fitness
 
   const intervalId = setInterval(() => {
 
-    if (total === maximumGenerations || withoutChanges === generationsUnchanged || withoutChanges === populationSize) {
+    if (countOfGenerations === maximumGenerations ||  generationsWithoutChanges === populationSize) {
       clearInterval(intervalId);
       drawTour(population[0].tour, 'deepskyblue');
       return;
@@ -169,13 +167,14 @@ function startAlgorithm(sizeOfChromosome) {
       drawPointsFromArray(cities)
       drawTour(population[0].tour, 'deepskyblue');
 
-      withoutChanges = 0
+      generationsWithoutChanges = 0
     }
 
-    withoutChanges++;
-    total++;
+    generationsWithoutChanges++;
+    countOfGenerations++;
   }, 0);
 }
+
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -192,7 +191,7 @@ function clearAllFunction() {
   cities = [];
   ctx.beginPath();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "white";
+  ctx.fillStyle = neonColor;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 clearAll.addEventListener("click", function() {
@@ -221,7 +220,10 @@ canvas.addEventListener('click', function(event) {
 
 ctx.beginPath();
 ctx.rect(0, 0, canvas.width, canvas.height);
-ctx.fillStyle = "white";
+const neonColor = getComputedStyle(document.documentElement).getPropertyValue('--clr-bg');
+
+// Устанавливаем цвет заливки контекста рисования
+ctx.fillStyle = neonColor;
 ctx.fill();
 
 const getPath = document.getElementById('getPath'); // Замените 'buildPathButton' на id вашей кнопки
@@ -245,13 +247,13 @@ function clear(x, y){
     if (dist <= radius) { //если расстояние меньше, чем радиус, то есть мышка заходит на окружность
       ctx.beginPath();
       ctx.rect(0, 0, canvas.width, canvas.height); //очищаем канву от ненужной точки в белый
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = neonColor;
       ctx.fill();
       cities.splice(i, 1); //начиная с индекса i удаляем один элемент
       for (let j = 0; j < cities.length; j++) { //проходимся по оставшимся точкам, для того чтобы не удалять нужные точки
         ctx.beginPath();
         ctx.arc(cities[j].x, cities[j].y, radius, 0, 2 * Math.PI);
-        ctx.fillStyle = 'black'; //красим неудаленные точки в черный
+        ctx.fillStyle = 'pink'; //красим неудаленные точки в черный
         ctx.fill();
       }
       break;
