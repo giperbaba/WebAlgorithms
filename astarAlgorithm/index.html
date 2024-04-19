@@ -10,21 +10,24 @@
 
 <body>
 <div id="main">
-  <div id="astar">
-    <canvas id="canvas"></canvas>
-    <div class ="buttons">
-      <br><button id="start">выбрать <br>старт</button>
-      <br><button id="finish">выбрать <br>финиш</button>
-      <label>
-        <input id="w" type="range" min="11" max="201" value="21" step="2" onchange="refresh()">
-      </label>
-      <br><button id="erase">убрать <br>стену</button>
-      <br><button id="wall">добавить <br>стену</button>
-      <br><button id="maze" onclick="refresh()">сгенерировать <br>лабиринт</button>
-      <br><button id="begin">начать</button>
+  <div id="container">
+    <span class="btn"><a href="http://localhost:63343/main/geneticAlgorithm/index.html"></a></span>
+    <div id="astar">
+      <canvas id="canvas"></canvas>
+      <div class ="buttons">
+        <br><button id="start">выбрать <br>старт</button>
+        <br><button id="finish">выбрать <br>финиш</button>
+        <label>
+          <input id="w" type="range" min="11" max="201" value="21" step="2" onchange="refresh()">
+        </label>
+        <br><button id="erase">убрать <br>стену</button>
+        <br><button id="wall">добавить <br>стену</button>
+        <br><button id="maze" onclick="refresh(); main()">сгенерировать <br>лабиринт</button>
+        <br><button id="begin">начать</button>
+      </div>
     </div>
+    <span class="btn"><a href="http://localhost:63343/main/geneticAlgorithm/index.html"></a></span>
   </div>
-
 </div>
 <script src="astar.js"></script>
 </body>

@@ -35,7 +35,46 @@
   position: fixed;
 }
 
+#container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
 
+/*--------buttons left right--------*/
+
+#container .btn {
+  position: absolute;
+  top: calc(50% - 30px);
+  height: 15px;
+  width: 15px;
+  border-left: 8px solid #696969;
+  border-top: 8px solid #696969;
+  cursor: pointer;
+}
+#container .btn:hover {
+  transform: scale(1.2);
+}
+#container .btn.inactive {
+  border-color: #282828
+}
+#container .btn:first-of-type {
+  transform: rotate(-45deg);
+  left: 10px
+}
+#container .btn:last-of-type {
+  transform: rotate(135deg);
+  right: 10px;
+}
+
+#container .btn a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-indent: -9999px;
+  overflow: hidden;
+}
 
 #𝛼::-webkit-slider-thumb {
   background-color: red; /* Для веб-кит браузеров */

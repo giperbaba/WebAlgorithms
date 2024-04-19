@@ -18,13 +18,13 @@ let columns = parseInt(document.getElementById("w").value);
 let rows = columns;
 let cellSize = (canvas.width - paddingJS * 2) / columns;
 
-let mazeColor = "#4E4E50";
+let mazeColor = "#363043";
 let startCellColor = "#4D6D9A";
 let finishCellColor = "#99C";
 
-let pathCellColor = "#99CED3";
-let neighborCellColor = "#5F6366";
-let finishPathColor = "#EDB5BF";
+let pathCellColor = "#ae9c9c";
+let neighborCellColor = "#80a1c2";
+let finishPathColor = "#c6b1f7";
 
 let startClicker = false;
 let finishClicker = false;
@@ -330,18 +330,23 @@ function clickButton() {
 
     canvas.addEventListener('mousedown', function (e) {
       if (startClicker && !finishClicker && !eraseClicker && !wallClicker) {
-        if (startCell.x !== null) {
-          drawCell(startCell.x, finishCell.y, "white");
-          startCell = new Cell(null, null);
-        }
-
         let coordinateX = e.offsetX;
         let coordinateY = e.offsetY;
 
         let x = Math.trunc(coordinateX / cellSize);
         let y = Math.trunc(coordinateY / cellSize);
 
-        if (matrix[y][x] && (finishCell.x !== x && finishCell.y !== y)) {
+        // Если нажатая клетка уже является стартовой, то игнорируем
+        if (startCell.x === x && startCell.y === y) {
+          return;
+        }
+
+        if (startCell.x !== null) {
+          drawCell(startCell.x, finishCell.y, "white");
+          startCell = new Cell(null, null);
+        }
+
+        if (matrix[y][x] && (finishCell.x !== x || finishCell.y !== y)) {
           startCell.x = x;
           startCell.y = y;
           drawMaze();
@@ -358,17 +363,23 @@ function clickButton() {
 
     canvas.addEventListener('mousedown', function (e) {
       if (!startClicker && finishClicker && !eraseClicker && !wallClicker) {
-        if (finishCell.x !== null) {
-          drawCell(finishCell.x, finishCell.y, "white");
-          finishCell = new Cell(null, null);
-        }
         let coordinateX = e.offsetX;
         let coordinateY = e.offsetY;
 
         let x = Math.trunc(coordinateX / cellSize);
         let y = Math.trunc(coordinateY / cellSize);
 
-        if (matrix[y][x] && (startCell.x !== x && startCell.y !== y)) {
+        // Если нажатая клетка уже является финишной, то игнорируем
+        if (finishCell.x === x && finishCell.y === y) {
+          return;
+        }
+
+        if (finishCell.x !== null) {
+          drawCell(finishCell.x, finishCell.y, "white");
+          finishCell = new Cell(null, null);
+        }
+
+        if (matrix[y][x] && (startCell.x !== x || startCell.y !== y)) {
           finishCell.x = x;
           finishCell.y = y;
           drawMaze();

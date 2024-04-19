@@ -11,26 +11,29 @@
 
 <body>
 <div id="main">
-  <div id="ant">
-    <canvas id="canvas" style="background-color: transparent;"></canvas>
-    <div class ="buttons">
-      <br><button id="clear" onclick="refresh()">очистить <br>экран</button>
-      <div>
-        <p class="text">Вес ребра 𝛼: <span id="alfaValue">1</span></p>
-        <label>
-          <input id="𝛼" type="range" min="1" max="4" value="1" onchange="updateValueAlfa(this.value)">
-        </label>
+  <div id="container">
+    <span class="btn"><a href="http://localhost:63343/main/geneticAlgorithm/index.html"></a></span>
+    <div id="ant">
+      <canvas id="canvas" style="background-color: transparent;"></canvas>
+      <div class ="buttons">
+        <br><button id="clear" onclick="refresh()">очистить <br>экран</button>
+        <div>
+          <p class="text">Вес ребра 𝛼: <span id="alfaValue">1</span></p>
+          <label>
+            <input id="𝛼" type="range" min="1" max="4" value="1" onchange="updateValueAlfa(this.value)">
+          </label>
 
-        <p class="text">Интенсивность <br>феромонов 𝛽: <span id="betaValue">1</span></p>
-        <label>
-          <input id="𝛽" type="range" min="1" max="7" value="1" onchange="updateValueBeta(this.value)">
-        </label>
+          <p class="text">Интенсивность <br>феромонов 𝛽: <span id="betaValue">1</span></p>
+          <label>
+            <input id="𝛽" type="range" min="1" max="7" value="1" onchange="updateValueBeta(this.value)">
+          </label>
 
-        <br><button id="begin">начать</button>
+          <br><button id="begin">начать</button>
+        </div>
       </div>
     </div>
+    <span class="btn"><a href="http://localhost:63343/main/treeDecisionAlgorithm/treeDecision.html"></a></span>
   </div>
-
 </div>
 <script src="script.js"></script>
 </body>
