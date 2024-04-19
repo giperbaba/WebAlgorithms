@@ -1,27 +1,3 @@
-#klaster {
-  display: flex;
-  margin-top: 100px;
-  margin-left: 450px;
-  width: 50%;
-
-}
-#canvas {
-  width: 500px;
-  border: 5px solid hotpink;
-}
-
-#buttons {
-  background-color: rgba(0, 0, 0, 0.3);
-  border: none;
-  color: white;
-  padding: 14px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-}
-
-html,
 body {
   margin: 0;
   padding: 0;
@@ -31,14 +7,59 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-
 }
 
+#klaster {
+  display: flex;
+  margin-top: 80px;
+  margin-left: 450px;
+  width: 50%;
+}
+#canvas {
+  width: 500px;
+  border: 2px solid hotpink;
+}
+
+.buttons {
+  font-weight: normal;
+  cursor: pointer;
+  height: 50px;
+  width: 100%;
+  font-size: 15px;
+  border: 3px solid hotpink;
+  background: black;
+  color: white;
+  border-radius: 10px;
+  margin: 10px;
+  font-family: Snell Roundhand, cursive;
+}
+#algorithmButtonsContainer {
+  font-family: Snell Roundhand, cursive;
+  border: none;
+  color: white;
+  text-align: center;
+  display: inline-block;
+  font-size: 15px;
+}
+#buttonsContainer {
+  border: none;
+  color: white;
+  padding: 14px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  font-size: 10px;
+}
+
+
 .glow-on-hover {
-  width: 120px;
-  height: 40px;
+  width: 150px;
+  height: 50px;
+  font-family: Snell Roundhand, cursive;
+  font-size: 15px;
   border: none;
   outline: none;
+  margin: 7px;
   color: #fff;
   background: #000;
   cursor: pointer;
@@ -96,28 +117,39 @@ body {
 
 
 .bg-ex-fixed{
-  background: url("pictures/webAlgorithms.svg"); /* Путь к картинке */
+  background: url("pictures/webAlgorithms.svg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  background-attachment: fixed; /* Закрепляем изображение */
+  background-attachment: fixed;
   min-height: 100%;
   min-width: 640px;
   width: 100%;
   height: auto;
   position: fixed;
 }
+
+.slider {
+  appearance: none;
+  width: 150px;
+  height: 15px;
+  background: black;
+  outline: none;
+  border-radius: 50px;
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  cursor: pointer;
+  border: 2px solid hotpink;
+}
+
 @media screen and (max-width: 970px), screen and (max-height: 500px) {
-  #canva {
+  #canvas {
     width: 400px;
-  }
-
-  button {
-    font-size: 10px;
-  }
-
-  #klaster {
-
-    width: 60%;
   }
 }
