@@ -31,6 +31,7 @@ body{
   height: auto; /* Автоматический подбор высоты */
 }
 /*--------cards--------*/
+
 #slider-container {
   height: 300px;
   width: 85vw;
@@ -38,6 +39,37 @@ body{
   position: relative;
   overflow: hidden;
   padding: 20px;
+}
+
+#slider-container #slider .slide:nth-child(1) {
+  background-color: rgba(244,56,150,0.8);
+  border: 2px solid rgb(32,19,52);
+
+}
+
+#slider-container #slider .slide:nth-child(2) {
+  background-color: rgba(240,101,78,0.8);
+  border: 2px solid rgb(32,19,52);
+}
+
+#slider-container #slider .slide:nth-child(3) {
+  background-color: rgba(249,216,61,0.8);
+  border: 2px solid rgb(32,19,52);
+}
+
+#slider-container #slider .slide:nth-child(4) {
+  background-color: rgba(106,246,168,0.8);
+  border: 2px solid rgb(32,19,52);
+}
+
+#slider-container #slider .slide:nth-child(5) {
+  background-color: rgba(16,133,245,0.8);
+  border: 2px solid rgb(32,19,52);
+}
+
+#slider-container #slider .slide:nth-child(6) {
+  background-color: rgba(4,55,249,0.8);
+  border: 2px solid rgb(32,19,52);
 }
 
 #slider .slide span a {
