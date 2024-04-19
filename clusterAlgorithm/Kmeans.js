@@ -5,13 +5,13 @@ let canvasWidthNum = parseInt(canvasWidth.replace("px", ""));
 canvas.width = canvasWidthNum;
 canvas.height = canvas.width;
 
-const add = document.getElementById('add');
-const deletePoint = document.getElementById('delete');
-const deleteAll = document.getElementById('deleteAll');
-const startKMeansAlgorithm = document.getElementById('startKMeansAlgorithm');
-const startHierarchyAlgorithm = document.getElementById('startHierarchyAlgorithm');
-const startDBSCANAlgorithm = document.getElementById('startDbscanAlgorithm');
-const compareAlgorithms = document.getElementById('compareAlgorithms');
+let add = document.getElementById('add');
+let deletePoint = document.getElementById('delete');
+let deleteAll = document.getElementById('deleteAll');
+let startKMeansAlgorithm = document.getElementById('startKMeansAlgorithm');
+let startHierarchyAlgorithm = document.getElementById('startHierarchyAlgorithm');
+let startDBSCANAlgorithm = document.getElementById('startDbscanAlgorithm');
+let compareAlgorithms = document.getElementById('compareAlgorithms');
 let sliderEps = document.getElementById("eps");
 
 
