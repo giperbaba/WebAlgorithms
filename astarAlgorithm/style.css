@@ -98,36 +98,121 @@
   top: 50%;
   right: 20px;
   transform: translateY(-50%);
-  z-index: 1000; /* Устанавливаем высокий z-index, чтобы кнопки были поверх остального контента */
+  z-index: 1000;
 }
 
 .navigation a {
   display: block;
-  width: 40px; /* Ширина кнопки */
-  height: 40px; /* Высота кнопки */
-  background-color: rgba(60,15,9,0.7); /* Цвет кнопки */
+  width: 40px;
+  height: 40px;
+  background-color: rgba(60,15,9,0.7);
   border: 2px solid rgb(60,15,9);
-  border-radius: 50%; /* Создаем круглую форму */
-  margin-bottom: 10px; /* Отступ между кнопками */
+  border-radius: 50%;
+  margin-bottom: 10px;
   text-align: center;
   font-style: italic;
-  line-height: 40px; /* Выравниваем текст по вертикали */
-  color: black; /* Цвет текста */
-  text-decoration: none; /* Убираем подчеркивание ссылки */
-  position: relative; /* Добавляем позиционирование для текста */
+  line-height: 40px;
+  color: black;
+  text-decoration: none;
+  position: relative;
 }
 
 .navigation a span {
-  position: absolute; /* Абсолютное позиционирование текста */
+  position: absolute;
   top: 50%;
-  right: 50px; /* Располагаем текст слева от кнопки */
+  right: 50px;
   transform: translateY(-50%);
-  opacity: 0; /* Начальное состояние текста - невидимый */
-  transition: opacity 0.3s; /* Добавляем анимацию перехода для плавного появления текста */
-  white-space: nowrap; /* Текст будет отображаться в одной строке */
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
 }
 
 .navigation a:hover span {
-  opacity: 1; /* При наведении на кнопку текст становится видимым */
+  opacity: 1;
 }
 
+/*-------adaptation-------*/
+@media screen and (min-width: 470px) and (max-width: 799px) {
+  #astar {
+    width: 80%;
+  }
+
+  .buttons {
+    font-size: 18px;
+    padding: 10px 20px;
+  }
+
+  .text {
+    font-size: 12px;
+  }
+
+  #container .btn {
+    height: 8px;
+    width: 8px;
+    border-left: 4px solid #696969;
+    border-top: 4px solid #696969;
+    left: 3px;
+    right: 3px;
+  }
+
+  .slider {
+    width: 100px;
+    height: 8px;
+  }
+
+  .navigation a {
+    width: 25px;
+    height: 25px;
+    margin-bottom: 3px;
+    right: 5px;
+  }
+
+  .navigation a span {
+    right: 30px;
+  }
+}
+
+@media screen and (max-width: 469px) {
+  #astar {
+    width: 90%;
+  }
+
+  .buttons {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+
+  .text {
+    font-size: 12px;
+  }
+
+  #container .btn {
+    height: 6px;
+    width: 6px;
+    border-left: 3px solid #696969;
+    border-top: 3px solid #696969;
+    left: 2px;
+    right: 2px;
+  }
+
+  .slider {
+    width: 80px;
+    height: 6px;
+  }
+
+  .navigation {
+    top: 70%;
+    right: 5px;
+  }
+
+  .navigation a {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 3px;
+    right: 3px;
+  }
+
+  .navigation a span {
+    right: 25px;
+  }
+}
