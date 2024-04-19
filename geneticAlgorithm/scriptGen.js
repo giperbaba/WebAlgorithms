@@ -178,9 +178,11 @@ function startAlgorithm(sizeOfTour) {
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+let canvasWidth = window.getComputedStyle(canvas).getPropertyValue("width");
+let canvasWidthNum = parseInt(canvasWidth.replace("px", ""));
+canvas.width = canvasWidthNum;
+canvas.height = canvas.width;
 
-canvas.width = 600;
-canvas.height = 400;
 
 let radius = 10;
 let cities = [];
@@ -207,13 +209,13 @@ deletePoint.addEventListener('click', function () {
 });
 canvas.addEventListener('click', function(event) {
   if (flag === 1) {
-    let x = event.clientX - canvas.offsetLeft; // получаем координату X курсора относительно левого края элемента canvas.
-    let y = event.clientY - canvas.offsetTop; //мы получаем координату Y курсора относительно верхнего края элемента canvas.
+    let x = event.offsetX; // получаем координату X курсора относительно левого края элемента canvas.
+    let y = event.offsetY; //мы получаем координату Y курсора относительно верхнего края элемента canvas.
     drawPoint(x,y,radius);
   }
   else if (flag === 2) {
-    let x = event.clientX - canvas.offsetLeft;
-    let y = event.clientY - canvas.offsetTop;
+    let x = event.offsetX;
+    let y = event.offsetY;
     clear(x,y,radius);
   }
 });
