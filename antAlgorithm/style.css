@@ -76,15 +76,21 @@
   overflow: hidden;
 }
 
-#𝛼::-webkit-slider-thumb {
-  background-color: red; /* Для веб-кит браузеров */
+.slider {
+  appearance: none;
+  width: 150px;
+  height: 15px;
+  background: rgba(10,47,49,0.7);
+  outline: none;
+  border-radius: 50px;
 }
 
-#𝛼::-moz-range-thumb {
-  background-color: red; /* Для Firefox */
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  cursor: pointer;
+  border: 2px solid rgb(10,47,49);
 }
-
-#𝛼::-ms-thumb {
-  background-color: red; /* Для Internet Explorer и Edge */
-}
-
