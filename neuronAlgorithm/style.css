@@ -44,7 +44,6 @@ button{
   box-shadow: inset 0 0 3em 0 var(--clr-neon), 0 0 2em 0 var(--clr-neon);
 }
 
-
 .digits-field {
   height: 33vw;
   width: min-content;
@@ -159,6 +158,38 @@ body {
 .neon-button:focus::after {
   opacity: 1;
 }
+#container .btn {
+  position: absolute;
+  top: calc(50% - 30px);
+  height: 15px;
+  width: 15px;
+  border-left: 8px solid #696969;
+  border-top: 8px solid #696969;
+  cursor: pointer;
+}
+#container .btn:hover {
+  transform: scale(1.2);
+}
+#container .btn.inactive {
+  border-color: #282828
+}
+#container .btn:first-of-type {
+  transform: rotate(-45deg);
+  left: 10px
+}
+#container .btn:last-of-type {
+  transform: rotate(135deg);
+  right: 10px;
+}
+
+#container .btn a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-indent: -9999px;
+  overflow: hidden;
+}
+
 
 .container .btn {
   position: absolute;
@@ -192,4 +223,38 @@ body {
   overflow: hidden;
 }
 
+.navigation {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 1000; /* Устанавливаем высокий z-index, чтобы кнопки были поверх остального контента */
+}
 
+.navigation a {
+  display: block;
+  width: 40px; /* Ширина кнопки */
+  height: 40px; /* Высота кнопки */
+  background-color: pink; /* Цвет кнопки */
+  border-radius: 50%; /* Создаем круглую форму */
+  margin-bottom: 10px; /* Отступ между кнопками */
+  text-align: center;
+  line-height: 40px; /* Выравниваем текст по вертикали */
+  color: #fff; /* Цвет текста */
+  text-decoration: none; /* Убираем подчеркивание ссылки */
+  position: relative; /* Добавляем позиционирование для текста */
+}
+
+.navigation a span {
+  position: absolute; /* Абсолютное позиционирование текста */
+  top: 50%;
+  right: 50px; /* Располагаем текст слева от кнопки */
+  transform: translateY(-50%);
+  opacity: 0; /* Начальное состояние текста - невидимый */
+  transition: opacity 0.3s; /* Добавляем анимацию перехода для плавного появления текста */
+  white-space: nowrap; /* Текст будет отображаться в одной строке */
+}
+
+.navigation a:hover span {
+  opacity: 1; /* При наведении на кнопку текст становится видимым */
+}
