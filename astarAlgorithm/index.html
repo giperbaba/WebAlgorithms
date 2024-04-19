@@ -12,13 +12,16 @@
 <div id="main">
   <div id="container">
     <span class="btn"><a href="../clusterAlgorithm/clastering.html"></a></span>
+    <a href="/main/index.html">
+      <img src="img/home.svg" style="position: fixed; top: 0; left: 0; width: 150px; height: 150px;">
+    </a>
     <div id="astar">
       <canvas id="canvas"></canvas>
       <div class ="buttons">
         <br><button id="start">выбрать <br>старт</button>
         <br><button id="finish">выбрать <br>финиш</button>
         <label>
-          <input id="w" type="range" min="11" max="201" value="21" step="2" onchange="refresh()">
+          <input class="slider" id="columns" type="range" min="11" max="121" value="21" step="2" onchange="refresh()">
         </label>
         <br><button id="erase">убрать <br>стену</button>
         <br><button id="wall">добавить <br>стену</button>

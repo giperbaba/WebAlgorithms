@@ -22,11 +22,11 @@ body{
 .cont {
   margin: 10px auto 20px;
   display: block;
-  padding: 10px 0; /* Добавляем верхний и нижний внутренний отступ */
+  padding: 10px 0;
   width: 600px;
   text-align: center;
   position: relative;
-  border-top: 1px solid black; /* Добавляем верхнюю границу */
+  border-top: 1px solid black;
 }
 
 .cont img {
@@ -35,6 +35,7 @@ body{
   width: auto;
   height: auto;
 }
+
 /*--------cards--------*/
 
 #slider-container {

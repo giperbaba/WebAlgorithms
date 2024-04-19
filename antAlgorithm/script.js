@@ -1,7 +1,7 @@
 let canvas = document.getElementById("canvas");
 let context = canvas.getContext("2d");
 
-let canvasWidth = 550;
+let canvasWidth = 500;
 
 canvas.width = canvasWidth;
 canvas.height = canvas.width;
