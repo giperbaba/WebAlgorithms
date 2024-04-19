@@ -18,7 +18,6 @@ let sliderEps = document.getElementById("eps");
 let radius = 15;
 let circles = [];
 let flag = 1;
-//let visited = new Set();
 
 function updateEps(value) {
   epsValue.innerText = value;
@@ -257,12 +256,6 @@ function hierarchy(points, countOfClusters) {
   return clusters;
 }
 
-function shuffleArray(circles) { //выбираем рандомную точку
-  for (let i = circles.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [circles[i], circles[j]] = [circles[j], circles[i]];
-  }
-}
 
 function rangeQuery(points, point) { //Находим все точки, которые находятся на eps от нашей выбранной точки
   let eps = sliderEps.value;
@@ -321,13 +314,11 @@ function dbscanAlgorithm(circles, minCountOfPoints) {
 }
 
 startDBSCANAlgorithm.addEventListener('click', function () {
-  let countOfClusters = document.getElementById("sizeK").value;
   if (circles.length === 0){
     alert("Добавь точки");
   }
   else{
     let [clusters, noise] = dbscanAlgorithm(circles, 5);
-    console.log(clusters, noise);
     for (let i = 0; i < clusters.length; i++) {
       let color = getRandomColor();
       for (let j = 0; j < clusters[i].length; j++) {
