@@ -124,13 +124,5 @@ recognizeButton.addEventListener('click', () => {
   console.log(sortedIndexes);
   window.csvContent+=name+","+imageMatrix+"\n";
 });
-const func1 = () => {
-  window.name = document.getElementById("name").value;
-}
-const saveButton = document.getElementById('save');
 
-saveButton.addEventListener('click', () =>{const encodedUri = encodeURI(csvContent);
-  const link = document.createElement('a');
-  link.href = encodedUri;
-  link.download = 'testHandWriterNumbers.csv';
-  link.click();})
+

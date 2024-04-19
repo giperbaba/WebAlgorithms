@@ -1,15 +1,13 @@
-var container = document.getElementById('container')
-var slider = document.getElementById('slider');
-var slides = document.getElementsByClassName('slide').length;
-var buttons = document.getElementsByClassName('btn');
+let container = document.getElementById('container')
+let slider = document.getElementById('slider');
+let slides = document.getElementsByClassName('slide').length;
+let buttons = document.getElementsByClassName('btn');
 
-var currentPosition = 0;
-var currentMargin = 0;
-var slidesPerPage = 0;
-var slidesCount = slides - slidesPerPage;
-var containerWidth = container.offsetWidth;
-var prevKeyActive = false;
-var nextKeyActive = true;
+let currentPosition = 0;
+let currentMargin = 0;
+let slidesPerPage = 0;
+let slidesCount = slides - slidesPerPage;
+let containerWidth = container.offsetWidth;
 
 window.addEventListener("resize", checkWidth);
 
@@ -35,7 +33,7 @@ function setParams(w) {
   slidesCount = slides - slidesPerPage;
   if (currentPosition > slidesCount) {
     currentPosition -= slidesPerPage;
-  };
+  }
   currentMargin = - currentPosition * (100 / slidesPerPage);
   slider.style.marginLeft = currentMargin + '%';
   if (currentPosition > 0) {
@@ -52,29 +50,29 @@ function setParams(w) {
 setParams();
 
 function slideRight() {
-  if (currentPosition != 0) {
+  if (currentPosition !== 0) {
     slider.style.marginLeft = currentMargin + (100 / slidesPerPage) + '%';
     currentMargin += (100 / slidesPerPage);
     currentPosition--;
-  };
+  }
   if (currentPosition === 0) {
     buttons[0].classList.add('inactive');
   }
   if (currentPosition < slidesCount) {
     buttons[1].classList.remove('inactive');
   }
-};
+}
 
 function slideLeft() {
-  if (currentPosition != slidesCount) {
+  if (currentPosition !== slidesCount) {
     slider.style.marginLeft = currentMargin - (100 / slidesPerPage) + '%';
     currentMargin -= (100 / slidesPerPage);
     currentPosition++;
-  };
-  if (currentPosition == slidesCount) {
+  }
+  if (currentPosition === slidesCount) {
     buttons[1].classList.add('inactive');
   }
   if (currentPosition > 0) {
     buttons[0].classList.remove('inactive');
   }
-};
+}
