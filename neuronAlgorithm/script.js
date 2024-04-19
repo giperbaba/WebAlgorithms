@@ -15,20 +15,19 @@ class NeuralNetwork {
   }
 
   async initializeData() {
-    this.biases1 = await readCSVFile('https://raw.githubusercontent.com/giperbaba/WebAlgorithms/neuroAlgorithm/neuronAlgorithm/biases1.csv');
-    this.biases2 = await readCSVFile('https://raw.githubusercontent.com/giperbaba/WebAlgorithms/neuroAlgorithm/neuronAlgorithm/biases2.csv');
-    this.weights1 = await readCSVFile('https://raw.githubusercontent.com/giperbaba/WebAlgorithms/neuroAlgorithm/neuronAlgorithm/weight1.csv');
-    this.weights2 = await readCSVFile('https://raw.githubusercontent.com/giperbaba/WebAlgorithms/neuroAlgorithm/neuronAlgorithm/weight2.csv');
+    this.biases1 = await readCSVFile('https://raw.githubusercontent.com/giperbaba/WebAlgorithms/master/neuronAlgorithm/biases1.csv');
+    this.biases2 = await readCSVFile('https://raw.githubusercontent.com/giperbaba/WebAlgorithms/master/neuronAlgorithm/biases2.csv');
+    this.weights1 = await readCSVFile('https://raw.githubusercontent.com/giperbaba/WebAlgorithms/master/neuronAlgorithm/weight1.csv');
+    this.weights2 = await readCSVFile('https://raw.githubusercontent.com/giperbaba/WebAlgorithms/master/neuronAlgorithm/weight2.csv');
   }
   sigmoid(x)
   {
-    //console.log(x)
     for (let i = 0; i < x.length; i++){
       x[i]= 1 / (1 + Math.exp(-x[i]))}
     return x
   }
   relu(x){
-    //console.log(x)
+
     for (let i = 0; i < x.length; i++){
       if(x[i]<0){
         x[i]=[0];
@@ -36,15 +35,13 @@ class NeuralNetwork {
     }
     return x;
   }
-  dotProduct(v1, v2) {
+  matrixProduct(v1, v2) {
     let res = [];
-    //console.log(v2[0])
     for (let i = 0; i < v1.length; i++) {
       res[i] = [];
       for (let j = 0; j < v2[0].length; j++) {
         let sum = 0;
         for (let k = 0; k < v1[0].length; k++) {
-          //console.log(v1[i][k] , v2[k][j])
           sum += v1[i][k] * v2[k][j];
         }
         res[i][j] = sum;
@@ -66,21 +63,14 @@ class NeuralNetwork {
         result.push(row);
       }
     }
-    //console.log(result)
     return result;
   }
-  feedforward(a) {
-    // Return the output of the network if "a" is input.
-    let b1 = this.biases1;
-    let w1 = this.weights1;
-    let b2 = this.biases2;
-    let w2 = this.weights2;
-    let layear1 = this.relu(this.sum(this.dotProduct(w1, a),b1));
-    //console.log(layear1)
-    //console.log(this.dotProduct(w2, layear1))
-    //console.log(this.sum(this.dotProduct(w2, layear1),b2))
-    let output = this.sigmoid(this.sum(this.dotProduct(w2, layear1),b2));
-    //console.log(output)
+  feedforward(inputImage) {
+
+    let layear1 = this.relu(this.sum(this.matrixProduct(this.weights1, inputImage),this.biases1));
+
+    let output = this.sigmoid(this.sum(this.matrixProduct(this.weights2, layear1),this.biases2));
+
     return output;
   }
 
