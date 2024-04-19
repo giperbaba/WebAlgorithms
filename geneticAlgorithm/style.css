@@ -6,8 +6,8 @@ h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
-
 }
+
 :root {
   --clr-neon: hsl(317 100% 54%);
   --clr-bg:hsl(195, 84%, 20%);

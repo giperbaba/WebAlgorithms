@@ -183,7 +183,6 @@ let canvasWidthNum = parseInt(canvasWidth.replace("px", ""));
 canvas.width = canvasWidthNum;
 canvas.height = canvas.width;
 
-
 let radius = 10;
 let cities = [];
 let flag = 1;
