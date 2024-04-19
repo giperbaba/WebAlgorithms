@@ -14,7 +14,7 @@ let wall = document.getElementById('wall');
 let begin = document.getElementById('begin');
 
 const paddingJS = 3;
-let columns = document.getElementById("sizeM").value;
+let columns = parseInt(document.getElementById("w").value);
 let rows = columns;
 let cellSize = (canvas.width - paddingJS * 2) / columns;
 
@@ -137,6 +137,7 @@ function getMazeMatrix(matrix) {
   }
   return matrix;
 }
+
 
 function mixArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -284,7 +285,7 @@ function refresh() {
   open = [];
   close = [];
 
-  columns = document.getElementById("sizeM").value;
+  columns = parseInt(document.getElementById("w").value);
   rows = columns;
   matrix = createMatrix(columns, rows);
   cellSize = (canvas.width - paddingJS * 2) / columns;
