@@ -6,16 +6,20 @@
 </head>
 
 <body>
-<div class ="main">
-<div class="container">
-  <div id="container">
-    <span class="btn"><a href="../treeDecisionAlgorithm/treeDecision.html"></a></span>
+<div id="container">
+  <span class="btn"><a href="../treeDecisionAlgorithm/treeDecision.html"></a></span>
+  <a href="../index.html">
+    <img src="home.svg" style="position: fixed; top: 0; left: 0; width: 150px; height: 150px;">
+  </a>
   <h1>Нейронная сеть</h1>
-
+  <p class="in">Значение </p>
+  <input type="number" id="name">
+  <button type="submit" id="save1" onclick="func1()">Save</button>
   <div class="wrapper">
     <div class="canvas_wrapper">
       <div class="button_wrapper">
         <button id="clear"class="neon-button">clear</button>
+        <button id="save">Save</button>
         <button id="recognize" class="neon-button">recognize</button>
 
 
@@ -39,10 +43,7 @@
     </div>
 
   </div>
-
-</div>
   <span class="btn"><a href="../clusterAlgorithm/clastering.html"></a></span>
-</div>
 </div>
 <script src="draw.js"></script>
 <script src="script.js"></script>
