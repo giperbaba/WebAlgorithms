@@ -19,9 +19,11 @@ body{
 .cont {
   margin: 10px auto 20px;
   display: block;
-  padding: 0;
+  padding: 10px 0; /* Добавляем верхний и нижний внутренний отступ */
   width: 600px;
   text-align: center;
+  position: relative;
+  border-top: 1px solid black; /* Добавляем верхнюю границу */
 }
 
 .cont img {
@@ -39,6 +41,7 @@ body{
   position: relative;
   overflow: hidden;
   padding: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
 }
 
 #slider-container #slider .slide:nth-child(1) {
@@ -48,6 +51,7 @@ body{
   background-size: 60%;
   background-position: center;
   background-repeat: no-repeat;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
 }
 
 #slider-container #slider .slide:nth-child(2) {
@@ -57,6 +61,7 @@ body{
   background-size: 65%;
   background-position: center;
   background-repeat: no-repeat;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
 }
 
 #slider-container #slider .slide:nth-child(3) {
@@ -66,6 +71,7 @@ body{
   background-size: 60%;
   background-position: center;
   background-repeat: no-repeat;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
 }
 
 #slider-container #slider .slide:nth-child(4) {
@@ -75,6 +81,7 @@ body{
   background-size: 60%;
   background-position: center;
   background-repeat: no-repeat;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
 }
 
 #slider-container #slider .slide:nth-child(5) {
@@ -84,6 +91,7 @@ body{
   background-size: 60%;
   background-position: center;
   background-repeat: no-repeat;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
 }
 
 #slider-container #slider .slide:nth-child(6) {
@@ -93,6 +101,7 @@ body{
   background-size: 60%;
   background-position: center;
   background-repeat: no-repeat;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
 }
 
 #slider .slide span a {

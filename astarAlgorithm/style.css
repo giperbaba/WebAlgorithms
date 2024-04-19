@@ -1,11 +1,22 @@
-#astar {
-  display: flex;
-  margin: auto;
-  width: 50%;
+/*--------fon picture--------*/
+#main{
+  background: url("img/geekbrains.by-kak-sdelat-fon-html.svg") no-repeat fixed center;
+  background-size: cover;
+  min-height: 100%;
+  min-width: 100%;
+  width: auto;
+  height: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
-#canvas {
-  width: 550px;
+/*-------main elements-------*/
+#astar {
+  display: flex;
+  padding-top: 50px;
+  margin: auto;
+  width: 50%;
 }
 
 .buttons{
@@ -20,19 +31,14 @@
   color: aliceblue;
 }
 
-#main{
-  background: url("img/geekbrains.by-kak-sdelat-fon-html.svg"); /* Путь к картинке */
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed; /* Закрепляем изображение */
-  min-height: 100%;
-  min-width: 640px;
-  width: 100%;
-  height: auto;
-  position: fixed;
+#container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
 }
 
+/*--------buttons left right--------*/
 #container .btn {
   position: absolute;
   top: calc(50% - 30px);
@@ -63,5 +69,25 @@
   height: 100%;
   text-indent: -9999px;
   overflow: hidden;
+}
+
+/*--------input slider--------*/
+.slider {
+  appearance: none;
+  width: 150px;
+  height: 15px;
+  background: rgba(10,47,49,0.7);
+  outline: none;
+  border-radius: 50px;
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  cursor: pointer;
+  border: 2px solid rgb(10,47,49);
 }
 

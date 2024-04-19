@@ -13,6 +13,9 @@
 <div id="main">
   <div id="container">
     <span class="btn"><a href="../geneticAlgorithm/index.html"></a></span>
+    <a href="/WebAlgorithms/main/index.html">
+      <img src="img/home.svg" style="position: fixed; top: 0; left: 0; width: 150px; height: 150px;">
+    </a>
     <div id="ant">
       <canvas id="canvas" style="background-color: transparent;"></canvas>
       <div class ="buttons">
@@ -23,9 +26,9 @@
             <input class="slider" id="𝛼" type="range" min="1" max="4" value="1" onchange="updateValueAlfa(this.value)">
           </label>
 
-          <p class="text">Интенсивность <br>феромонов 𝛽: <span id="betaValue">1</span></p>
+          <p class="text">Интенсивность <br>феромонов 𝛽: <span id="betaValue">5</span></p>
           <label>
-            <input class="slider" id="𝛽" type="range" min="1" max="7" value="1" onchange="updateValueBeta(this.value)">
+            <input class="slider" id="𝛽" type="range" min="1" max="7" value="5" onchange="updateValueBeta(this.value)">
           </label>
 
           <br><button id="begin">начать</button>

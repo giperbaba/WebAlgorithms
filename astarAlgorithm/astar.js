@@ -1,10 +1,9 @@
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext("2d");
 
-let canvasWidth = window.getComputedStyle(canvas).getPropertyValue("width");
-let canvasWidthNum = parseInt(canvasWidth.replace("px", ""));
+let canvasWidth = 500;
 
-canvas.width = canvasWidthNum;
+canvas.width = canvasWidth;
 canvas.height = canvas.width;
 
 let start = document.getElementById('start');
@@ -14,7 +13,7 @@ let wall = document.getElementById('wall');
 let begin = document.getElementById('begin');
 
 const paddingJS = 3;
-let columns = parseInt(document.getElementById("w").value);
+let columns = parseInt(document.getElementById("columns").value);
 let rows = columns;
 let cellSize = (canvas.width - paddingJS * 2) / columns;
 
@@ -285,7 +284,7 @@ function refresh() {
   open = [];
   close = [];
 
-  columns = parseInt(document.getElementById("w").value);
+  columns = parseInt(document.getElementById("columns").value);
   rows = columns;
   matrix = createMatrix(columns, rows);
   cellSize = (canvas.width - paddingJS * 2) / columns;
