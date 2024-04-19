@@ -1,6 +1,6 @@
 /*--------fon picture--------*/
 #main{
-  background: url("img/geekbrains.by-kak-sdelat-fon-html.svg") no-repeat fixed center;
+  background: url("img/fo.jpg") no-repeat fixed center;
   background-size: cover;
   min-height: 100%;
   min-width: 100%;
@@ -23,12 +23,13 @@
   display: inline-block;
   padding: 12px 28px;
   font-size: 25px;
-  background-color: rgba(40, 23, 62, 0.4);
+  background-color: rgba(44,44,44,0.3);
 }
 
 .text {
-  font-size: 15px;
-  color: aliceblue;
+  font-size: 16px;
+  font-style: italic;
+  color: black;
 }
 
 #container {
@@ -76,7 +77,7 @@
   appearance: none;
   width: 150px;
   height: 15px;
-  background: rgba(10,47,49,0.7);
+  background: rgba(105,105,105,0.9);
   outline: none;
   border-radius: 50px;
 }
@@ -88,6 +89,45 @@
   border-radius: 50%;
   background: #FFFFFF;
   cursor: pointer;
-  border: 2px solid rgb(10,47,49);
+  border: 2px solid #534f4f;
+}
+
+/*--------menu-------*/
+.navigation {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  z-index: 1000; /* Устанавливаем высокий z-index, чтобы кнопки были поверх остального контента */
+}
+
+.navigation a {
+  display: block;
+  width: 40px; /* Ширина кнопки */
+  height: 40px; /* Высота кнопки */
+  background-color: rgba(60,15,9,0.7); /* Цвет кнопки */
+  border: 2px solid rgb(60,15,9);
+  border-radius: 50%; /* Создаем круглую форму */
+  margin-bottom: 10px; /* Отступ между кнопками */
+  text-align: center;
+  font-style: italic;
+  line-height: 40px; /* Выравниваем текст по вертикали */
+  color: black; /* Цвет текста */
+  text-decoration: none; /* Убираем подчеркивание ссылки */
+  position: relative; /* Добавляем позиционирование для текста */
+}
+
+.navigation a span {
+  position: absolute; /* Абсолютное позиционирование текста */
+  top: 50%;
+  right: 50px; /* Располагаем текст слева от кнопки */
+  transform: translateY(-50%);
+  opacity: 0; /* Начальное состояние текста - невидимый */
+  transition: opacity 0.3s; /* Добавляем анимацию перехода для плавного появления текста */
+  white-space: nowrap; /* Текст будет отображаться в одной строке */
+}
+
+.navigation a:hover span {
+  opacity: 1; /* При наведении на кнопку текст становится видимым */
 }
 

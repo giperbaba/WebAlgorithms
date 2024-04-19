@@ -96,3 +96,42 @@
   cursor: pointer;
   border: 2px solid rgb(10,47,49);
 }
+
+/*-------menu--------*/
+.navigation {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  z-index: 1000; /* Устанавливаем высокий z-index, чтобы кнопки были поверх остального контента */
+}
+
+.navigation a {
+  display: block;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(10,47,49,0.9);
+  border: 2px solid rgb(10,47,49);
+  border-radius: 50%; /* Создаем круглую форму */
+  margin-bottom: 10px; /* Отступ между кнопками */
+  text-align: center;
+  font-style: italic;
+  line-height: 40px; /* Выравниваем текст по вертикали */
+  color: black; /* Цвет текста */
+  text-decoration: none; /* Убираем подчеркивание ссылки */
+  position: relative; /* Добавляем позиционирование для текста */
+}
+
+.navigation a span {
+  position: absolute; /* Абсолютное позиционирование текста */
+  top: 50%;
+  right: 50px; /* Располагаем текст слева от кнопки */
+  transform: translateY(-50%);
+  opacity: 0; /* Начальное состояние текста - невидимый */
+  transition: opacity 0.3s; /* Добавляем анимацию перехода для плавного появления текста */
+  white-space: nowrap; /* Текст будет отображаться в одной строке */
+}
+
+.navigation a:hover span {
+  opacity: 1; /* При наведении на кнопку текст становится видимым */
+}

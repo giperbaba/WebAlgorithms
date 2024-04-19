@@ -21,6 +21,15 @@ body{
 
 .cont {
   margin: 10px auto 20px;
+  display: inline;
+  padding: 10px 0;
+  width: 600px;
+  text-align: center;
+  position: relative;
+}
+
+.cont-down {
+  margin: 10px auto 20px;
   display: block;
   padding: 10px 0;
   width: 600px;
@@ -30,10 +39,14 @@ body{
 }
 
 .cont img {
-  max-width: 100%;
+  max-width: 50%;
   max-height: 200px;
   width: auto;
   height: auto;
+}
+
+.cont .minions {
+  max-width: 40%;
 }
 
 .text {
