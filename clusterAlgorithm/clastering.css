@@ -1,196 +1,239 @@
+
 body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100vh;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 #klaster {
-  display: flex;
-  margin-top: 80px;
-  margin-left: 450px;
-  width: 50%;
-}
+    display: flex;
+    margin-top: 80px;
+    margin-left: 450px;
+    width: 50%;
+  }
 
-#canvas {
-  width: 500px;
-  border: 2px solid hotpink;
-}
-
-.buttons {
-  font-weight: normal;
-  cursor: pointer;
-  height: 50px;
-  width: 100%;
-  font-size: 15px;
-  border: 3px solid hotpink;
-  background: black;
-  color: white;
-  border-radius: 10px;
-  margin: 10px;
-  font-family: Snell Roundhand, cursive;
-}
-
-#algorithmButtonsContainer {
-  font-family: Snell Roundhand, cursive;
-  border: none;
-  color: white;
-  text-align: center;
-  display: inline-block;
-  font-size: 15px;
-}
-
-#buttonsContainer {
-  border: none;
-  color: white;
-  padding: 14px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: flex;
-  font-size: 10px;
-}
-
-.glow-on-hover {
-  width: 150px;
-  height: 50px;
-  font-family: Snell Roundhand, cursive;
-  font-size: 15px;
-  border: none;
-  outline: none;
-  margin: 7px;
-  color: #fff;
-  background: #000;
-  cursor: pointer;
-  position: relative;
-  z-index: 0;
-  border-radius: 10px;
-}
-
-.glow-on-hover:before {
-  content: '';
-  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
-  position: absolute;
-  top: -2px;
-  left:-2px;
-  background-size: 400%;
-  z-index: -1;
-  filter: blur(5px);
-  width: calc(100% + 4px);
-  height: calc(100% + 4px);
-  animation: glowing 20s linear infinite;
-  opacity: 0;
-  transition: opacity .3s ease-in-out;
-  border-radius: 10px;
-}
-
-.glow-on-hover:active {
-  color: #000
-}
-
-.glow-on-hover:active:after {
-  background: transparent;
-}
-
-.glow-on-hover:hover:before {
-  opacity: 1;
-}
-
-.glow-on-hover:after {
-  z-index: -1;
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #111;
-  left: 0;
-  top: 0;
-  border-radius: 10px;
-}
-
-@keyframes glowing {
-  0% { background-position: 0 0; }
-  50% { background-position: 400% 0; }
-  100% { background-position: 0 0; }
-}
-
-.bg-ex-fixed{
-  background: url("pictures/webAlgorithms.svg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  min-height: 100%;
-  min-width: 640px;
-  width: 100%;
-  height: auto;
-  position: fixed;
-}
-
-.slider {
-  appearance: none;
-  width: 150px;
-  height: 15px;
-  background: black;
-  outline: none;
-  border-radius: 50px;
-}
-
-.slider::-webkit-slider-thumb {
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background: #FFFFFF;
-  cursor: pointer;
-  border: 2px solid hotpink;
-}
-
-.navigation {
-  position: fixed;
-  top: 50%;
-  right: 20px;
-  transform: translateY(-50%);
-  z-index: 1000; /* Устанавливаем высокий z-index, чтобы кнопки были поверх остального контента */
-}
-
-.navigation a {
-  display: block;
-  font-family: Snell Roundhand, cursive;
-  width: 40px;
-  height: 40px;
-  background-color: black;
-  border: 2px solid hotpink;
-  border-radius: 50%;
-  margin-bottom: 10px;
-  text-align: center;
-  line-height: 40px; /* Выравниваем текст по вертикали */
-  color: #fff;
-  text-decoration: none; /* Убираем подчеркивание ссылки */
-  position: relative; /* Добавляем позиционирование для текста */
-}
-
-.navigation a span {
-  position: absolute; /* Абсолютное позиционирование текста */
-  top: 50%;
-  right: 50px; /* Располагаем текст слева от кнопки */
-  transform: translateY(-50%);
-  opacity: 0; /* Начальное состояние текста - невидимый */
-  transition: opacity 0.3s; /* Добавляем анимацию перехода для плавного появления текста */
-  white-space: nowrap; /* Текст будет отображаться в одной строке */
-}
-
-.navigation a:hover span {
-  opacity: 1; /* При наведении на кнопку текст становится видимым */
-}
-
-
-@media screen and (max-width: 970px), screen and (max-height: 500px) {
   #canvas {
-    width: 400px;
+    width: 500px;
+    border: 2px solid hotpink;
+  }
+
+  .buttons {
+    font-weight: normal;
+    cursor: pointer;
+    height: 50px;
+    width: 100%;
+    font-size: 15px;
+    border: 3px solid hotpink;
+    background: black;
+    color: white;
+    border-radius: 10px;
+    margin: 10px;
+    font-family: Snell Roundhand, cursive;
+  }
+
+  #algorithmButtonsContainer {
+    font-family: Snell Roundhand, cursive;
+    border: none;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 15px;
+  }
+
+  #buttonsContainer {
+    border: none;
+    color: white;
+    padding: 14px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    font-size: 10px;
+  }
+
+  .glow-on-hover {
+    width: 150px;
+    height: 50px;
+    font-family: Snell Roundhand, cursive;
+    font-size: 15px;
+    border: none;
+    outline: none;
+    margin: 7px;
+    color: #fff;
+    background: #000;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+  }
+
+  .glow-on-hover:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+  }
+
+  .glow-on-hover:active {
+    color: #000
+  }
+
+  .glow-on-hover:active:after {
+    background: transparent;
+  }
+
+  .glow-on-hover:hover:before {
+    opacity: 1;
+  }
+
+  .glow-on-hover:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+  }
+
+  @keyframes glowing {
+    0% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 400% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+
+  .bg-ex-fixed {
+    background: url("pictures/webAlgorithms.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100%;
+    min-width: 640px;
+    width: 100%;
+    height: auto;
+    position: fixed;
+  }
+
+  .slider {
+    appearance: none;
+    width: 150px;
+    height: 15px;
+    background: black;
+    outline: none;
+    border-radius: 50px;
+  }
+
+  .slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    cursor: pointer;
+    border: 2px solid hotpink;
+  }
+
+  .navigation {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    z-index: 1000; /* Устанавливаем высокий z-index, чтобы кнопки были поверх остального контента */
+  }
+
+  .navigation a {
+    display: block;
+    font-family: Snell Roundhand, cursive;
+    width: 40px;
+    height: 40px;
+    background-color: black;
+    border: 2px solid hotpink;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    text-align: center;
+    line-height: 40px; /* Выравниваем текст по вертикали */
+    color: #fff;
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    position: relative; /* Добавляем позиционирование для текста */
+  }
+
+  .navigation a span {
+    position: absolute; /* Абсолютное позиционирование текста */
+    top: 50%;
+    right: 50px; /* Располагаем текст слева от кнопки */
+    transform: translateY(-50%);
+    opacity: 0; /* Начальное состояние текста - невидимый */
+    transition: opacity 0.3s; /* Добавляем анимацию перехода для плавного появления текста */
+    white-space: nowrap; /* Текст будет отображаться в одной строке */
+  }
+
+  .navigation a:hover span {
+    opacity: 1; /* При наведении на кнопку текст становится видимым */
+  }
+
+
+@media screen and (min-width: 470px) and (max-width: 799px) {
+  #klaster {
+    margin-top: 80px;
+    margin-left: 200px;
+    width: 50%;
+  }
+
+  #canvas {
+    width: 500px;
+    border: 2px solid hotpink;
+  }
+
+  .buttons {
+    height: 40px;
+  }
+}
+/* Для устройств с максимальной шириной 469px */
+@media screen and (max-width: 469px) {
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #klaster {
+    margin-top: 20px;
+    margin-left: 0;
+    width: 90%;
+  }
+
+  #canvas {
+    width: 100%;
+    max-width: 300px;
+    border: 2px solid hotpink;
   }
 }
 
