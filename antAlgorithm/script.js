@@ -74,6 +74,7 @@ async function drawPath(way, color, index = 1) {
     context.stroke();
     return Promise.resolve();
   }
+  clear();
 }
 
 function clearPath(way, index = 1) {

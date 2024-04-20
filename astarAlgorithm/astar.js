@@ -17,13 +17,13 @@ let columns = parseInt(document.getElementById("columns").value);
 let rows = columns;
 let cellSize = (canvas.width - paddingJS * 2) / columns;
 
-let mazeColor = "#363043";
-let startCellColor = "#4D6D9A";
-let finishCellColor = "#99C";
+let mazeColor = "#292727";
+let startCellColor = "rgba(47,79,79,10)";
+let finishCellColor = "rgba(47,79,79,0.9)";
 
-let pathCellColor = "#ae9c9c";
-let neighborCellColor = "#80a1c2";
-let finishPathColor = "#c6b1f7";
+let pathCellColor = "rgba(47,79,79,0.7)";
+let neighborCellColor = "rgba(47,79,79,0.5)";
+let finishPathColor = "rgba(80,15,9,0.7)";
 
 let startClicker = false;
 let finishClicker = false;
@@ -85,7 +85,7 @@ function drawMaze() {
   context.fill();
   for (let y = 0; y < matrix.length; y++) {
     for (let x = 0; x < matrix.length; x++) {
-      const color = (matrix[y][x]) ? "white" : mazeColor;
+      const color = (matrix[y][x]) ? "#e9e9e9" : mazeColor;
       drawCell(x, y, color);
     }
   }
@@ -226,7 +226,7 @@ async function astar() {
       drawCell(x, y, pathCellColor);
     }
 
-    await delay(20);
+    await delay(speed);
 
     if (y > 0 && matrix[y - 1][x]) {
       let position = new Cell(x, y - 1);
@@ -271,6 +271,7 @@ async function astar() {
   if (!found) {
     alert("Дома не было кровати... 😈")
   }
+  clear();
 }
 
 function main() {
@@ -285,6 +286,7 @@ function refresh() {
   close = [];
 
   columns = parseInt(document.getElementById("columns").value);
+  speed = parseInt(document.getElementById("speed").value);
   rows = columns;
   matrix = createMatrix(columns, rows);
   cellSize = (canvas.width - paddingJS * 2) / columns;
@@ -341,7 +343,7 @@ function clickButton() {
         }
 
         if (startCell.x !== null) {
-          drawCell(startCell.x, finishCell.y, "white");
+          drawCell(startCell.x, finishCell.y, "#e9e9e9");
           startCell = new Cell(null, null);
         }
 
@@ -374,7 +376,7 @@ function clickButton() {
         }
 
         if (finishCell.x !== null) {
-          drawCell(finishCell.x, finishCell.y, "white");
+          drawCell(finishCell.x, finishCell.y, "#e9e9e9");
           finishCell = new Cell(null, null);
         }
 

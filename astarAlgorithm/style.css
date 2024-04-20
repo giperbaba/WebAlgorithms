@@ -1,6 +1,6 @@
 /*--------fon picture--------*/
 #main{
-  background: url("img/geekbrains.by-kak-sdelat-fon-html.svg") no-repeat fixed center;
+  background: url("img/fo.jpg") no-repeat fixed center;
   background-size: cover;
   min-height: 100%;
   min-width: 100%;
@@ -23,12 +23,13 @@
   display: inline-block;
   padding: 12px 28px;
   font-size: 25px;
-  background-color: rgba(40, 23, 62, 0.4);
+  background-color: rgba(44,44,44,0.3);
 }
 
 .text {
-  font-size: 15px;
-  color: aliceblue;
+  font-size: 16px;
+  font-style: italic;
+  color: black;
 }
 
 #container {
@@ -76,7 +77,7 @@
   appearance: none;
   width: 150px;
   height: 15px;
-  background: rgba(10,47,49,0.7);
+  background: rgba(105,105,105,0.9);
   outline: none;
   border-radius: 50px;
 }
@@ -88,6 +89,130 @@
   border-radius: 50%;
   background: #FFFFFF;
   cursor: pointer;
-  border: 2px solid rgb(10,47,49);
+  border: 2px solid #534f4f;
 }
 
+/*--------menu-------*/
+.navigation {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+
+.navigation a {
+  display: block;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(60,15,9,0.7);
+  border: 2px solid rgb(60,15,9);
+  border-radius: 50%;
+  margin-bottom: 10px;
+  text-align: center;
+  font-style: italic;
+  line-height: 40px;
+  color: black;
+  text-decoration: none;
+  position: relative;
+}
+
+.navigation a span {
+  position: absolute;
+  top: 50%;
+  right: 50px;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+}
+
+.navigation a:hover span {
+  opacity: 1;
+}
+
+/*-------adaptation-------*/
+@media screen and (min-width: 470px) and (max-width: 799px) {
+  #astar {
+    width: 80%;
+  }
+
+  .buttons {
+    font-size: 18px;
+    padding: 10px 20px;
+  }
+
+  .text {
+    font-size: 12px;
+  }
+
+  #container .btn {
+    height: 8px;
+    width: 8px;
+    border-left: 4px solid #696969;
+    border-top: 4px solid #696969;
+    left: 3px;
+    right: 3px;
+  }
+
+  .slider {
+    width: 100px;
+    height: 8px;
+  }
+
+  .navigation a {
+    width: 25px;
+    height: 25px;
+    margin-bottom: 3px;
+    right: 5px;
+  }
+
+  .navigation a span {
+    right: 30px;
+  }
+}
+
+@media screen and (max-width: 469px) {
+  #astar {
+    width: 90%;
+  }
+
+  .buttons {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+
+  .text {
+    font-size: 12px;
+  }
+
+  #container .btn {
+    height: 6px;
+    width: 6px;
+    border-left: 3px solid #696969;
+    border-top: 3px solid #696969;
+    left: 2px;
+    right: 2px;
+  }
+
+  .slider {
+    width: 80px;
+    height: 6px;
+  }
+
+  .navigation {
+    top: 70%;
+    right: 5px;
+  }
+
+  .navigation a {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 3px;
+    right: 3px;
+  }
+
+  .navigation a span {
+    right: 25px;
+  }
+}
