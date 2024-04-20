@@ -60,9 +60,6 @@ button{
     color: #000;
     font-size: 1.1vw;
     margin-right: 10px;
-    /*width:40px;*/
-    /*height: 50px;*/
-    /*border-radius: 100%;*/
   }
   >div {
     width: 2.5vw;
@@ -228,64 +225,64 @@ body {
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  z-index: 1000; /* Устанавливаем высокий z-index, чтобы кнопки были поверх остального контента */
+  z-index: 1000;
 }
 
 .navigation a {
   display: block;
-  width: 40px; /* Ширина кнопки */
-  height: 40px; /* Высота кнопки */
-  background-color: pink; /* Цвет кнопки */
-  border-radius: 50%; /* Создаем круглую форму */
-  margin-bottom: 10px; /* Отступ между кнопками */
+  width: 40px;
+  height: 40px;
+  background-color: pink;
+  border-radius: 50%;
+  margin-bottom: 10px;
   text-align: center;
-  line-height: 40px; /* Выравниваем текст по вертикали */
-  color: #fff; /* Цвет текста */
-  text-decoration: none; /* Убираем подчеркивание ссылки */
-  position: relative; /* Добавляем позиционирование для текста */
+  line-height: 40px;
+  color: #fff;
+  text-decoration: none;
+  position: relative;
 }
 
 .navigation a span {
-  position: absolute; /* Абсолютное позиционирование текста */
+  position: absolute;
   top: 50%;
-  right: 50px; /* Располагаем текст слева от кнопки */
+  right: 50px;
   transform: translateY(-50%);
-  opacity: 0; /* Начальное состояние текста - невидимый */
-  transition: opacity 0.3s; /* Добавляем анимацию перехода для плавного появления текста */
-  white-space: nowrap; /* Текст будет отображаться в одной строке */
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
 }
 
 .navigation a:hover span {
-  opacity: 1; /* При наведении на кнопку текст становится видимым */
+  opacity: 1;
 }
 
 @media screen and (max-width: 469px) {
   body {
-    padding-right: 0; /* Удаляем правый отступ */
+    padding-right: 0;
   }
 
   .navigation {
-    top: auto; /* Отменяем фиксированное позиционирование */
-    bottom: 0; /* Перемещаем навигацию вниз */
-    right: 50%; /* Помещаем навигацию в центре горизонтально */
-    transform: translateX(50%); /* Центрируем навигацию по горизонтали */
-    flex-direction: row; /* Изменяем направление отображения кнопок на горизонтальное */
-    gap: 5px; /* Уменьшаем промежуток между кнопками */
+    top: auto;
+    bottom: 0;
+    right: 50%;
+    transform: translateX(50%);
+    flex-direction: row;
+    gap: 5px;
   }
 
   .navigation a {
-    margin: 0; /* Удаляем отступы у кнопок */
+    margin: 0;
   }
 
   .navigation a span {
-    top: -30px; /* Позиционируем текст над кнопкой */
-    right: 50%; /* Центрируем текст по горизонтали */
-    transform: translateX(50%); /* Центрируем текст по горизонтали */
+    top: -30px;
+    right: 50%;
+    transform: translateX(50%);
   }
 }
 
 @media screen and (min-width: 470px) and (max-width: 799px) {
   .navigation {
-    right: 20px; /* Уменьшаем отступ от правого края */
+    right: 20px;
   }
 }
