@@ -11,7 +11,6 @@
 <body>
 <div id="main">
   <div id="container">
-    <span class="btn"><a href="../clusterAlgorithm/clastering.html"></a></span>
     <a href="../index.html">
       <img src="img/home.svg" style="position: fixed; top: 0; left: 0; width: 150px; height: 150px;">
     </a>
@@ -26,10 +25,21 @@
         <br><button id="erase">убрать <br>стену</button>
         <br><button id="wall">добавить <br>стену</button>
         <br><button id="maze" onclick="refresh(); main()">сгенерировать <br>лабиринт</button>
+        <p class="text">Замедление анимации</p>
+        <label>
+          <input class="slider" id="speed" type="range" min="0" max="50" value="20" step="1">
+        </label>
         <br><button id="begin">начать</button>
       </div>
     </div>
-    <span class="btn"><a href="../geneticAlgorithm/index.html"></a></span>
+    <div class="navigation">
+      <a href="../clusterAlgorithm/clastering.html"><span>Clustering Algorithm</span></a>
+      <a href="../astarAlgorithm/index.html"><span>AStar Algorithm</span></a>
+      <a href="../geneticAlgorithm/index.html"><span>Genetic Algorithm</span></a>
+      <a href="../antAlgorithm/index.html"><span>Ant Algorithm</span></a>
+      <a href="../treeDecisionAlgorithm/treeDecision.html"><span>Tree Decision Algorithm</span></a>
+      <a href="../neuronAlgorithm/draw.html"><span>Neuro Algorithm</span></a>
+    </div>
   </div>
 </div>
 <script src="astar.js"></script>

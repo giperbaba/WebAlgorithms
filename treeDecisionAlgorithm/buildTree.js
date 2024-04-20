@@ -5,9 +5,9 @@ let isBuilt = false;
 let data = [];
 let tree = new Tree(new Node());
 
-const clearAll = document.getElementById('clearAll');
-const buildTree = document.getElementById('buildTree');
-const showResult = document.getElementById('showResult');
+let clearAll = document.getElementById('clearAll');
+let buildTree = document.getElementById('buildTree');
+let showResult = document.getElementById('showResult');
 
 inputFileEvent();
 
@@ -210,6 +210,8 @@ async function drawPath(path) {
   }
   document.getElementById("result").textContent = path[path.length - 1].name; //название последний ноды отображаем в поле result
   makeButtonsDisabled(false); //включаем кнопки
+  await new Promise(resolve => setTimeout(resolve, 500)); // подождать 0.5 секунды после анимации
+  clear();
 }
 
 showResult.addEventListener("click", async function () {

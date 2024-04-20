@@ -250,7 +250,7 @@ a.path {
   border: 3px solid #4B0082;
   padding: 5px 10px;
   text-decoration: none;
-  font-family: Snell Roundhand, cursive;;
+  font-family: Snell Roundhand, cursive;
   font-size: 15px;
   display: inline-block;
 
@@ -269,34 +269,107 @@ a.path {
 .tree li a:hover + ul ul::before {
   border-color: black;
 }
-#container .btn {
-  position: absolute;
-  top: calc(50% - 30px);
-  height: 15px;
-  width: 15px;
-  border-left: 8px solid #696969;
-  border-top: 8px solid #696969;
-  cursor: pointer;
-}
-#container .btn:hover {
-  transform: scale(1.2);
-}
-#container .btn.inactive {
-  border-color: #282828
-}
-#container .btn:first-of-type {
-  transform: rotate(-45deg);
-  left: 10px
-}
-#container .btn:last-of-type {
-  transform: rotate(135deg);
-  right: 10px;
+
+.navigation {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  z-index: 1000; /* Устанавливаем высокий z-index, чтобы кнопки были поверх остального контента */
 }
 
-#container .btn a {
+.navigation a {
   display: block;
-  width: 100%;
-  height: 100%;
-  text-indent: -9999px;
-  overflow: hidden;
+  width: 40px;
+  height: 40px;
+  background-color: #9466e8;
+  font-family: Snell Roundhand, cursive;
+  border: 2px solid black;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  text-align: center;
+  line-height: 40px;
+  color: black;
+  text-decoration: none;
+  position: relative;
+}
+
+.navigation a span {
+  position: absolute; /* Абсолютное позиционирование текста */
+  top: 50%;
+  right: 50px; /* Располагаем текст слева от кнопки */
+  transform: translateY(-50%);
+  opacity: 0; /* Начальное состояние текста - невидимый */
+  transition: opacity 0.3s; /* Добавляем анимацию перехода для плавного появления текста */
+  white-space: nowrap; /* Текст будет отображаться в одной строке */
+}
+
+.navigation a:hover span {
+  opacity: 1; /* При наведении на кнопку текст становится видимым */
+}
+
+@media screen and (max-width: 469px) {
+  body {
+    background: #ded3f4;
+  }
+
+  .sectionSetting {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .window {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .mainContainer {
+    flex-direction: column;
+  }
+
+  .csvContainer {
+    width: 100%;
+  }
+
+  .resultViewer {
+    margin: 20px;
+    font-size: 20px;
+  }
+
+  .buttonsContainer {
+    height: auto;
+    margin: 10px;
+  }
+
+  .buttons {
+    height: 40px;
+    font-size: 15px;
+    margin-top: 10px;
+  }
+}
+
+/* Для устройств с минимальной шириной 470px и максимальной шириной 799px */
+@media screen and (min-width: 470px) and (max-width: 799px) {
+  .rightContainer {
+    margin-right: 20px;
+    margin-left: 0;
+  }
+
+  .fileWrapper {
+    margin-top: 0;
+    margin-bottom: 10px;
+    margin-right: 15px;
+  }
+
+  .buttonsContainer {
+    width: 100%;
+    height: auto;
+    margin: 10px;
+  }
+
+  .buttons {
+    height: 40px;
+    font-size: 15px;
+    margin-top: 10px;
+  }
 }

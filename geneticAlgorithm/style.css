@@ -31,7 +31,6 @@ h1 {
   align-content: center;
 }
 
-
 *,
 *::before,
 *::after {
@@ -69,7 +68,6 @@ body {
 
   position: relative;
 }
-
 
 .neon-button::after {
   content: "";
@@ -131,38 +129,67 @@ body {
   text-indent: -9999px;
   overflow: hidden;
 }
+
 .navigation {
   position: fixed;
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  z-index: 1000; /* Устанавливаем высокий z-index, чтобы кнопки были поверх остального контента */
+  z-index: 1000;
 }
 
 .navigation a {
   display: block;
-  width: 40px; /* Ширина кнопки */
-  height: 40px; /* Высота кнопки */
-  background-color: pink; /* Цвет кнопки */
-  border-radius: 50%; /* Создаем круглую форму */
-  margin-bottom: 10px; /* Отступ между кнопками */
+  width: 40px;
+  height: 40px;
+  background-color: pink;
+  border-radius: 50%;
+  margin-bottom: 10px;
   text-align: center;
-  line-height: 40px; /* Выравниваем текст по вертикали */
-  color: #fff; /* Цвет текста */
-  text-decoration: none; /* Убираем подчеркивание ссылки */
-  position: relative; /* Добавляем позиционирование для текста */
+  line-height: 40px;
+  color: #fff;
+  text-decoration: none;
+  position: relative;
 }
 
 .navigation a span {
-  position: absolute; /* Абсолютное позиционирование текста */
+  position: absolute;
   top: 50%;
-  right: 50px; /* Располагаем текст слева от кнопки */
+  right: 50px;
   transform: translateY(-50%);
-  opacity: 0; /* Начальное состояние текста - невидимый */
-  transition: opacity 0.3s; /* Добавляем анимацию перехода для плавного появления текста */
-  white-space: nowrap; /* Текст будет отображаться в одной строке */
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
 }
 
 .navigation a:hover span {
-  opacity: 1; /* При наведении на кнопку текст становится видимым */
+  opacity: 1;
+}
+
+/* Media Queries */
+@media screen and (max-width: 469px) {
+  h1 {
+    text-align: left;
+  }
+
+  #canvas {
+    width: auto;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .canvas_wrapper {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  body {
+    padding-right: 0;
+  }
+}
+
+@media screen and (min-width: 470px) and (max-width: 799px) {
+  h1 {
+    text-align: right;
+  }
 }
